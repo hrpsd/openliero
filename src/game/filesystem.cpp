@@ -699,6 +699,8 @@ FsNode::FsNode(std::string const& path)
 					imp.reset(new FsNodeFilesystem("."));
 					imp = imp->go(part);
 				}
+#elif __APPLE__
+                imp.reset(new FsNodeFilesystem("/"));
 #else
 				if (part.empty())
 					imp.reset(new FsNodeFilesystem(part));

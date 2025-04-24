@@ -301,7 +301,7 @@ void Gfx::init()
 	// Joystick init
 	SDL_GameControllerEventState(SDL_ENABLE);
 	int numJoysticks = SDL_NumJoysticks();
-	joysticks.resize(numJoysticks);
+    joysticks.resize(numJoysticks);
 	for ( int i = 0; i < numJoysticks; ++i ) {
 		joysticks[i].sdlGameController= SDL_GameControllerOpen(i);
 		joysticks[i].clearState();
@@ -760,12 +760,23 @@ void Gfx::processEvent(SDL_Event& ev, Controller* controller)
 	}
 }
 
+int lastNumJoysticks = 0;
+
 void Gfx::process(Controller* controller)
 {
 	SDL_Event ev;
 	keyBufPtr = keyBuf;
 	while(SDL_PollEvent(&ev))
 	{
+        int numJoysticks = SDL_NumJoysticks();
+        if (numJoysticks != lastNumJoysticks) {
+            lastNumJoysticks = numJoysticks;
+            joysticks.resize(numJoysticks);
+            for ( int i = 0; i < numJoysticks; ++i ) {
+                joysticks[i].sdlGameController= SDL_GameControllerOpen(i);
+                joysticks[i].clearState();
+            }
+        }
 		processEvent(ev, controller);
 	}
 }
@@ -1855,7 +1866,7 @@ restart:
 
 	while(true)
 	{
-		playRenderer.clear();
+        playRenderer.clear();
 		controller->draw(this->playRenderer, false);
 
 		singleScreenRenderer.clear();
@@ -1923,7 +1934,7 @@ restart:
 			controller->draw(this->singleScreenRenderer, true);
 
 			++gfx.menuCycles;
-
+            
 			flip();
 			process(controller.get());
 		}
@@ -2023,7 +2034,7 @@ void Gfx::openHiddenMenu()
 
 int Gfx::menuLoop()
 {
-	Common& common = *this->common;
+    Common& common = *this->common;
 	int centerX = singleScreenRenderer.renderResX / 2;
 
 	std::memset(playRenderer.pal.entries, 0, sizeof(playRenderer.pal.entries));
