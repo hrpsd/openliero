@@ -293,7 +293,7 @@ Gfx::Gfx()
 
 void Gfx::init()
 {
-	SDL_ShowCursor(SDL_DISABLE);
+	//SDL_ShowCursor(SDL_DISABLE);
 	lastFrame = SDL_GetTicks64();
 
 	playRenderer.init(320, 200);
@@ -679,6 +679,15 @@ void Gfx::processEvent(SDL_Event& ev, Controller* controller)
 		{
 			switch (ev.window.event)
 			{
+                case SDL_WINDOWEVENT_CLOSE:
+                    if (ev.window.windowID  == SDL_GetWindowID(sdlWindow))
+                        running = false;
+                    else if (ev.window.windowID  == SDL_GetWindowID(sdlSpectatorWindow)) {
+                        settings->spectatorWindow = false;
+                        setVideoMode();
+                        hiddenMenu.updateItems(*common);
+                    }
+                    break;
 				case SDL_WINDOWEVENT_RESIZED:
 				{
 					onWindowResize(ev.window.windowID);
@@ -1864,7 +1873,7 @@ restart:
 
 	// TODO: Unfocus game when necessary
 
-	while(true)
+	while(running)
 	{
         playRenderer.clear();
 		controller->draw(this->playRenderer, false);
@@ -1923,7 +1932,7 @@ restart:
 
 		controller->focus();
 
-		while(true)
+		while(running)
 		{
 			if(!controller->process())
 				break;
@@ -2350,7 +2359,7 @@ int Gfx::menuLoop()
 		menuFlip();
 		process();
 	}
-	while(selected < 0);
+	while(running && selected < 0);
 
 	for (playRenderer.fadeValue = 32; playRenderer.fadeValue > 0; --playRenderer.fadeValue)
 	{
