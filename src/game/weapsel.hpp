@@ -6,6 +6,14 @@
 
 struct Game;
 
+struct PlayerControls : Menu
+{
+	PlayerControls(int x, int y)
+	: Menu(x, y)
+	{
+	}
+};
+
 struct WeaponSelection
 {
 	WeaponSelection(Game& game);
@@ -20,6 +28,7 @@ struct WeaponSelection
 	void unfocus();
 
 	Game& game;
+	std::vector<Menu> playerControls;
 
 	int enabledWeaps;
 	int fadeValue;

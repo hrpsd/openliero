@@ -6,7 +6,7 @@
 int gameEntry(int argc, char *argv[]);
 
 const char* build_version(void) {
-    return "1.36";
+    return "1.0a";
 }
 
 int main(int argc, char *argv[])
@@ -15,6 +15,8 @@ int main(int argc, char *argv[])
     NSError *error;
 
     NSString *docFolderPath = [[fileManager URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask] lastObject].path;
+    
+    //NSLog(@"NSDocumentDirectory %@", docFolderPath);
     
     NSArray *dirs = @[ @"Profiles", @"Resources", @"Setups", @"TC" ];
     

@@ -76,7 +76,11 @@ char const* Texts::keyNames[177] = {
     "-",
     "Right Shift",
     "* (Pad)",
+#ifdef __APPLE__
+    "Left Option",
+#else
     "Left Alt",
+#endif
     "",
     "Caps Lock",
     "F1",
@@ -109,7 +113,7 @@ char const* Texts::keyNames[177] = {
     "<",
     "F11",
     "F12",
-    "",
+    "Command",
     "",
     "",
     "",
@@ -164,7 +168,11 @@ char const* Texts::keyNames[177] = {
     "/ (Pad)",
     "",
     "Print Screen",
+#ifdef __APPLE__
+    "Right Option",
+#else
     "Right Alt",
+#endif
     "",
     "",
     "",

@@ -16,6 +16,7 @@ WeaponSelection::WeaponSelection(Game& game)
 , enabledWeaps(0)
 , isReady(game.viewports.size())
 , menus(game.viewports.size())
+, playerControls(game.viewports.size())
 , cachedBackground(false)
 , cachedSpectatorBackground(false)
 , focused(true)
@@ -41,7 +42,7 @@ WeaponSelection::WeaponSelection(Game& game)
 
 		{
 			int x = vp.rect.center_x() - 31;
-			int y = vp.rect.center_y() - 51;
+			int y = vp.rect.center_y() + 20;
 			menus[i].place(x, y);
 		}
 
@@ -88,6 +89,16 @@ WeaponSelection::WeaponSelection(Game& game)
 
 		menus[i].moveToFirstVisible();
 		isReady[i] = (ws.controller != 0 && game.settings->selectBotWeapons != 1);
+
+		gfx.playerSettings(i);
+
+		PlayerControls thisPlayerControls = PlayerControls(vp.rect.center_x() - 46, vp.rect.center_y() - 62);
+		thisPlayerControls.valueOffsetX = 75;
+
+		for (int s = PlayerMenu::PlUp; s <= PlayerMenu::PlDig; s++)
+			thisPlayerControls.addItem(*gfx.playerMenu.itemFromId(s));
+
+		playerControls[i] = thisPlayerControls;
 	}
 }
 
@@ -171,9 +182,12 @@ void WeaponSelection::drawNormalViewports(Renderer& renderer, GameState state)
 	if(!focused)
 		return;
 
-	drawRoundedBox(renderer.bmp, 114, 2, 0, 7, common.font.getDims(LS(SelWeap)));
+	std::string currentControls = "Remind the current set up keys:";
+	drawRoundedBox(renderer.bmp, 95, 2, 0, 7, common.font.getDims(currentControls));
+	common.font.drawText(renderer.bmp, currentControls, 97, 3, 50);
 
-	common.font.drawText(renderer.bmp, LS(SelWeap), 116, 3, 50);
+	drawRoundedBox(renderer.bmp, 114, 84, 0, 7, common.font.getDims(LS(SelWeap)));
+	common.font.drawText(renderer.bmp, LS(SelWeap), 116, 85, 50);
 
 	for(std::size_t i = 0; i < menus.size(); ++i)
 	{
@@ -192,6 +206,8 @@ void WeaponSelection::drawNormalViewports(Renderer& renderer, GameState state)
 		{
 			menus[i].draw(common, gfx.playRenderer, false);
 		}
+
+		playerControls[i].draw(common, gfx.playRenderer, true);
 	}
 
 	// TODO: This just uses the currently activated palette, which might well be wrong.
