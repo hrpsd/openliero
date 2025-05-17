@@ -49,7 +49,7 @@ char const* Texts::keyNames[177] = {
     "\xC5",
     "^",
     "Enter",
-    "Left Crtl",
+    "Left Ctrl",
     "A",
     "S",
     "D",
@@ -113,7 +113,7 @@ char const* Texts::keyNames[177] = {
     "<",
     "F11",
     "F12",
-    "Command",
+    "",
     "",
     "",
     "",
@@ -203,8 +203,13 @@ char const* Texts::keyNames[177] = {
     "",
     "",
     "",
-    "",
-    "",
+#ifdef __APPLE__
+    "Left Command",
+    "Right Command",
+#else
+    "Left Windows",
+    "Right Windows",
+#endif
 };
 
 Texts::Texts() {

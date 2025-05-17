@@ -54,7 +54,12 @@ SDL_Scancode lieroToSDLKeys[] =
 	SDL_SCANCODE_PAGEDOWN, // Page Down
 	SDL_SCANCODE_INSERT, // Insert
 	SDL_SCANCODE_DELETE, // Delete
-	Z, Z, Z, Z, Z // 5 zeroes
+	Z, Z, Z, // 3 zeroes
+#ifdef __APPLE__
+    SDL_SCANCODE_LGUI, SDL_SCANCODE_RGUI
+#else
+    Z, Z,
+#endif
 };
 
 Uint32 const maxScanCodes = sizeof(lieroToSDLKeys) / sizeof(*lieroToSDLKeys);
