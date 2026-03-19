@@ -5,7 +5,7 @@
 #include <memory>
 #include <map>
 #include <gvl/io2/stream.hpp>
-#include <miniz.h>
+#include <miniz/miniz.h>
 
 std::string changeLeaf(std::string const& path, std::string const& newLeaf);
 std::string getRoot(std::string const& path);

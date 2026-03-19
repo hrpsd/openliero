@@ -1,7 +1,7 @@
 #pragma once
 
 #define MINIZ_NO_ZLIB_COMPATIBLE_NAMES
-#include <miniz.h>
+#include <miniz/miniz.h>
 #include <memory>
 
 #include "gvl/io2/stream.hpp"

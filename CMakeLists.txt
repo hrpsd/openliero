@@ -121,16 +121,34 @@ set(GAME_SOURCES ${SOURCES}
   src/game/menu/menu.cpp
   src/game/menu/menuItem.cpp
   src/game/menu/timeBehavior.cpp
+  src/game/miniz/miniz.c
 )
 
 # game
 add_library(game ${GAME_SOURCES})
+
+target_include_directories(game PUBLIC ${PROJECT_SOURCE_DIR}/include/SDL2)
+
 target_link_libraries(game
-  PUBLIC
-  miniz::miniz
+  PRIVATE
+
+  ${PROJECT_SOURCE_DIR}/lib/libSDL2.a
+  ${PROJECT_SOURCE_DIR}/lib/libSDL2_image.a
+
   gvl
-  $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
-  $<IF:$<TARGET_EXISTS:SDL2_image::SDL2_image>,SDL2_image::SDL2_image,SDL2_image::SDL2_image-static>
+    
+  m.lib
+  dinput8.lib
+  dxerr8.lib
+  user32.lib
+  gdi32.lib
+  winmm.lib
+  imm32.lib
+  ole32.lib
+  oleaut32.lib
+  shell32.lib
+  version.lib
+  SetupAPI
 )
 
 if(APPLE)
