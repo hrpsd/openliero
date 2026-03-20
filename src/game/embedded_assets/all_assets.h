@@ -1,0 +1,1 @@
+FILE* embeddedFOpen(std::string const& name);

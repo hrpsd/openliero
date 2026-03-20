@@ -46,7 +46,7 @@ WeaponSelection::WeaponSelection(Game& game)
 			menus[i].place(x, y);
 		}
 
-		bool randomWeapons = (ws.controller != 0 && game.settings->selectBotWeapons == 0);
+		bool randomWeapons = true;//(ws.controller != 0 && game.settings->selectBotWeapons == 0);
 
 		for(int j = 0; j < Settings::selectableWeapons; ++j)
 		{

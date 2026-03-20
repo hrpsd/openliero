@@ -280,6 +280,7 @@ Gfx::Gfx()
 , curMenu(0)
 , sdlDrawSurface(0)
 , running(true)
+, screensaver(false)
 , doubleRes(true)
 , menuCycles(0)
 , windowW(320 * 2)
@@ -626,37 +627,57 @@ void Gfx::setDoubleRes(bool newDoubleRes)
 	hiddenMenu.updateItems(*common);
 }
 
+void Gfx::setScreensaver(bool newScreensaver) {
+	screensaver = newScreensaver;
+
+	settings->regenerateLevel = true;
+}
+
 void Gfx::processEvent(SDL_Event& ev, Controller* controller)
 {
 	switch(ev.type)
 	{
+		case SDL_MOUSEMOTION:
+		case SDL_MOUSEBUTTONDOWN:
+		case SDL_MOUSEWHEEL:
+			if (SDL_GetTicks64() > 1000)
+			{
+				running = false;
+			}
+		break;
+
 		case SDL_KEYDOWN:
 		{
-
-			SDL_Scancode s = ev.key.keysym.scancode;
-
-			if (keyBufPtr < keyBuf + 32)
-				*keyBufPtr++ = ev.key.keysym;
-
-			Uint32 dosScan = SDLToDOSKey(ev.key.keysym.scancode);
-			if(dosScan)
+			if (SDL_GetTicks64() > 1000)
 			{
-				dosKeys[dosScan] = true;
-				if(controller)
-					controller->onKey(dosScan, true);
+				running = false;
 			}
+			else {
+				SDL_Scancode s = ev.key.keysym.scancode;
 
-			if(s == SDL_SCANCODE_F11)
-			{
-				if (SDL_GetWindowFromID(ev.key.windowID) == sdlWindow)
+				if (keyBufPtr < keyBuf + 32)
+					*keyBufPtr++ = ev.key.keysym;
+
+				Uint32 dosScan = SDLToDOSKey(ev.key.keysym.scancode);
+				if(dosScan)
 				{
-					setFullscreen(!settings->fullscreen);
-				}
-				else
-				{
-					setSpectatorFullscreen(!spectatorFullscreen);
+					dosKeys[dosScan] = true;
+					if(controller)
+						controller->onKey(dosScan, true);
 				}
 
+				if(s == SDL_SCANCODE_F11)
+				{
+					if (SDL_GetWindowFromID(ev.key.windowID) == sdlWindow)
+					{
+						setFullscreen(!settings->fullscreen);
+					}
+					else
+					{
+						setSpectatorFullscreen(!spectatorFullscreen);
+					}
+
+				}
 			}
 		}
 		break;
@@ -1875,6 +1896,11 @@ restart:
 
 	while(running)
 	{
+		//if (screensaver)
+		{
+			setFullscreen(true);
+		}
+
         playRenderer.clear();
 		controller->draw(this->playRenderer, false);
 
@@ -1882,7 +1908,8 @@ restart:
 		controller->draw(this->singleScreenRenderer, true);
 
 
-		int selection = menuLoop();
+		
+		int selection = MainMenu::MaNewGame;//menuLoop();
 
 		if(selection == MainMenu::MaNewGame)
 		{

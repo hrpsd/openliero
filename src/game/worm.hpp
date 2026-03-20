@@ -64,7 +64,7 @@ struct WormSettingsExtensions {
 };
 
 struct WormSettings : gvl::shared, WormSettingsExtensions {
-  WormSettings() : health(100), controller(0), randomName(true), color(0) {
+  WormSettings() : health(100), controller(1), randomName(true), color(0) {
     rgb[0] = 26;
     rgb[1] = 26;
     rgb[2] = 62;

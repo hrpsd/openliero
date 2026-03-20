@@ -100,6 +100,8 @@ set(SOURCES
   src/game/mixer/mixer.cpp
   src/game/mixer/player.cpp
   src/game/metadata.cpp
+  src/game/fmemopen/libfmemopen.cpp
+  src/game/embedded_assets/all_assets.cpp
 )
 
 set(GAME_SOURCES ${SOURCES}
@@ -122,12 +124,14 @@ set(GAME_SOURCES ${SOURCES}
   src/game/menu/menuItem.cpp
   src/game/menu/timeBehavior.cpp
   src/game/miniz/miniz.c
+  
+
 )
 
 # game
 add_library(game ${GAME_SOURCES})
 
-target_include_directories(game PUBLIC ${PROJECT_SOURCE_DIR}/include/SDL2)
+target_include_directories(game PRIVATE ${PROJECT_SOURCE_DIR}/include/SDL2)
 
 target_link_libraries(game
   PRIVATE

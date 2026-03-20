@@ -132,7 +132,7 @@ bool LocalController::process()
 {
 	if(state == StateWeaponSelection)
 	{
-		if(ws->processFrame())
+		//if(ws->processFrame())
 			changeState(StateGame);
 	}
 	else if(state == StateGame || state == StateGameEnded)
@@ -278,9 +278,9 @@ void LocalController::changeState(GameState newState)
 
 				auto node = gfx.getConfigNode() / "Replays" / (buf + playerNames + ".lrp");
 
-				replay.reset(new ReplayWriter(node.toSink()));
+				//replay.reset(new ReplayWriter(node.toSink()));
 
-				replay->beginRecord(game);
+				//replay->beginRecord(game);
 			}
 			catch(std::runtime_error& e)
 			{

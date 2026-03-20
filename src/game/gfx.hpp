@@ -187,6 +187,7 @@ struct Gfx
 	void setSpectatorFullscreen(bool newFullscreen);
 	void setFullscreen(bool newFullscreen);
 	void setDoubleRes(bool newDoubleRes);
+	void setScreensaver(bool newScreensaver);
 
 	void saveSettings(FsNode node);
 	bool loadSettings(FsNode node);
@@ -280,6 +281,7 @@ struct Gfx
 
 	bool running;
 	bool spectatorFullscreen, doubleRes;
+	bool screensaver;
 
 	uint64_t lastFrame;
 	unsigned menuCycles;

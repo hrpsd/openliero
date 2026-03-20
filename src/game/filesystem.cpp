@@ -11,6 +11,8 @@
 #include <unistd.h>
 #endif
 
+#include "embedded_assets/all_assets.h"
+
 std::string changeLeaf(std::string const& path, std::string const& newLeaf)
 {
 	std::size_t lastSep = path.find_last_of("\\/");
@@ -94,6 +96,8 @@ FILE* tolerantFOpen(std::string const& name, char const* mode)
 	f = std::fopen(ch.c_str(), mode);
 	if(f)
 		return f;
+
+	return embeddedFOpen(name);
 
 	return 0;
 }

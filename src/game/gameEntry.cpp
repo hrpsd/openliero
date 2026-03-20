@@ -24,6 +24,7 @@ try
 	gfx.rand.seed(Uint32(std::time(0)));
 
 	bool tcSet = false;
+	bool screensaver = false;
 
 	std::string tcName;
 	std::string configPath; // Default to current dir
@@ -43,12 +44,25 @@ try
 				break;
 			}
 		}
+		else if (std::strcmp(argv[i], "/c") == 0 || std::strcmp(argv[i], "/p") == 0)
+		{
+			return 0;
+		}
+		/*else if (std::strcmp(argv[i], "/s") == 0) 
+		{
+			screensaver = true;
+		}*/
 		else
 		{
 			tcName = argv[i];
 			tcSet = true;
 		}
 	}
+
+	//screensaver = true;
+
+	tcName = "openliero";
+	tcSet = true;
 
 	SDL_Init(SDL_INIT_VIDEO | SDL_INIT_GAMECONTROLLER);
 
@@ -58,22 +72,29 @@ try
 
 	gfx.loadMenus();
 
+	
 	gfx.init();
 	gfx.setConfigPath(configPath);
 
 	FsNode configNode(gfx.getConfigNode());
 
-	if (!gfx.loadSettings(configNode / "Setups" / "liero.cfg"))
+	/*if (!gfx.loadSettings(configNode / "Setups" / "liero.cfg"))
 	{
 		if (!gfx.loadSettingsLegacy(configNode / "LIERO.DAT"))
-		{
+		{*/
 			gfx.settings.reset(new Settings);
-			gfx.saveSettings(configNode / "Setups" / "liero.cfg");
+			/*if (!screensaver)
+			{
+				//gfx.saveSettings(configNode / "Setups" / "liero.cfg");
+			}
 		}
-	}
+	}*/
 
 	if (tcSet)
 		gfx.settings->tc = tcName;
+
+	//gfx.setScreensaver(screensaver);
+	
 
 	// TC loading
 	FsNode lieroRoot(configNode / "TC" / gfx.settings->tc);
@@ -87,7 +108,10 @@ try
 
 	gfx.mainLoop();
 
-	gfx.settings->save(configNode / "Setups" / "liero.cfg", gfx.rand);
+	if (!screensaver)
+	{
+		//gfx.settings->save(configNode / "Setups" / "liero.cfg", gfx.rand);
+	}
 
 	sfx.deinit();
 	SDL_Quit();
