@@ -1,8 +1,6 @@
 #pragma once
 
-#if !DISABLE_SOUND
 #include "mixer/mixer.hpp"
-#endif
 #include <vector>
 #include "mixer/player.hpp"
 
@@ -33,9 +31,8 @@ struct Sfx
 	bool isPlaying(void* id);
 
 	void stop(void* id);
-#if !DISABLE_SOUND
+
 	ChannelInfo channelInfo[8];
-#endif
 
 	sfx_mixer* mixer;
 	bool initialized;

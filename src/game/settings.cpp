@@ -51,6 +51,8 @@ Settings::Settings()
 , randomLevel(true)
 , map(true)
 , screenSync(true)
+, playSounds(true)
+, screensaverConfig(true)
 {
 	std::memset(weapTable, 0, sizeof(weapTable));
 

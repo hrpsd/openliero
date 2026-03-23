@@ -78,6 +78,8 @@ struct Settings : gvl::shared, Extensions {
   std::string levelFile;
   bool map;
   bool screenSync;
+  bool screensaverConfig;
+  bool playSounds;
 
   std::shared_ptr<WormSettings> wormSettings[2];
 

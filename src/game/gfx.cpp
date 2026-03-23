@@ -277,6 +277,7 @@ Gfx::Gfx()
 , settingsMenu(178, 20)
 , playerMenu(178, 20)
 , hiddenMenu(178, 20)
+, screensaverMenu(178, 20)
 , curMenu(0)
 , sdlDrawSurface(0)
 , running(true)
@@ -489,6 +490,8 @@ void Gfx::onWindowResize(Uint32 windowID)
 
 void Gfx::loadMenus()
 {
+	screensaverMenu.addItem(MenuItem(48, 7, "PLAY SOUNDS", ScreensaverMenu::PlaySounds));
+
 	hiddenMenu.addItem(MenuItem(48, 7, "FULLSCREEN (F11)", HiddenMenu::Fullscreen));
 	hiddenMenu.addItem(MenuItem(48, 7, "DOUBLE SIZE", HiddenMenu::DoubleRes));
 	hiddenMenu.addItem(MenuItem(48, 7, "POWERLEVEL PALETTES", HiddenMenu::LoadPowerLevels));
@@ -559,6 +562,7 @@ void Gfx::loadMenus()
 	settingsMenu.valueOffsetX = 100;
 	playerMenu.valueOffsetX = 95;
 	hiddenMenu.valueOffsetX = 120;
+	screensaverMenu.valueOffsetX = 120;
 }
 
 void Gfx::setSpectatorFullscreen(bool newFullscreen)
@@ -627,12 +631,6 @@ void Gfx::setDoubleRes(bool newDoubleRes)
 	hiddenMenu.updateItems(*common);
 }
 
-void Gfx::setScreensaver(bool newScreensaver) {
-	screensaver = newScreensaver;
-
-	settings->regenerateLevel = true;
-}
-
 void Gfx::processEvent(SDL_Event& ev, Controller* controller)
 {
 	switch(ev.type)
@@ -640,7 +638,7 @@ void Gfx::processEvent(SDL_Event& ev, Controller* controller)
 		case SDL_MOUSEMOTION:
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_MOUSEWHEEL:
-			if (SDL_GetTicks64() > 1000)
+			if (!settings->screensaverConfig && SDL_GetTicks64() > 1000)
 			{
 				running = false;
 			}
@@ -648,7 +646,7 @@ void Gfx::processEvent(SDL_Event& ev, Controller* controller)
 
 		case SDL_KEYDOWN:
 		{
-			if (SDL_GetTicks64() > 1000)
+			if (!settings->screensaverConfig && SDL_GetTicks64() > 1000)
 			{
 				running = false;
 			}
@@ -1589,7 +1587,10 @@ void Gfx::weaponOptions()
 	{
 		playRenderer.bmp.copy(frozenScreen);
 
-		drawBasicMenu();
+		if (!settings->screensaverConfig)
+		{
+			drawBasicMenu();
+		}
 
 		drawRoundedBox(playRenderer.bmp, 179, 20, 0, 7, common.font.getDims(LS(Weapon)));
 		drawRoundedBox(playRenderer.bmp, 249, 20, 0, 7, common.font.getDims(LS(Availability)));
@@ -1896,23 +1897,22 @@ restart:
 
 	while(running)
 	{
-		//if (screensaver)
+		if (!settings->screensaverConfig)
 		{
 			setFullscreen(true);
 		}
-
         playRenderer.clear();
 		controller->draw(this->playRenderer, false);
 
 		singleScreenRenderer.clear();
 		controller->draw(this->singleScreenRenderer, true);
 
-
-		
-		int selection = MainMenu::MaNewGame;//menuLoop();
+		int selection = settings->screensaverConfig ? menuLoop() : MainMenu::MaNewGame;
 
 		if(selection == MainMenu::MaNewGame)
 		{
+			screensaverMenu.updateItems(*common);
+
 			std::unique_ptr<Controller> newController(new LocalController(common, settings));
 
 			Level* oldLevel = controller->currentLevel();
@@ -1957,6 +1957,8 @@ restart:
 			goto restart;
 		}
 
+		
+		
 		controller->focus();
 
 		while(running)
@@ -2096,14 +2098,22 @@ int Gfx::menuLoop()
 		startItemId = MainMenu::MaNewGame;
 	}
 
-	mainMenu.moveToFirstVisible();
-	settingsMenu.moveToFirstVisible();
-	settingsMenu.updateItems(common);
+	if (settings->screensaverConfig)
+	{
+		screensaverMenu.moveToFirstVisible();
+		screensaverMenu.updateItems(common);
+		curMenu = &screensaverMenu;
+	} 
+	else {
+		mainMenu.moveToFirstVisible();
+		settingsMenu.moveToFirstVisible();
+		settingsMenu.updateItems(common);
+		curMenu = &mainMenu;
+	}
 
 	playRenderer.fadeValue = 0;
 	singleScreenRenderer.fadeValue = 0;
-	curMenu = &mainMenu;
-
+	
 	frozenScreen.copy(playRenderer.bmp);
 	singleScreenRenderer.clear();
 	if (controller->currentLevel())
@@ -2116,7 +2126,10 @@ int Gfx::menuLoop()
 	int selected = -1;
 	do
 	{
-		drawBasicMenu();
+		if (!settings->screensaverConfig)
+		{
+			drawBasicMenu();
+		}
 		drawSpectatorInfo();
 
 		if(curMenu == &mainMenu)
@@ -2128,7 +2141,7 @@ int Gfx::menuLoop()
 		{
 			if(curMenu == &mainMenu)
 				mainMenu.moveToId(MainMenu::MaQuit);
-			else
+			else if (!settings->screensaverConfig)
 				curMenu = &mainMenu;
 		}
 
@@ -2382,7 +2395,7 @@ int Gfx::menuLoop()
 
 			curMenu->movementPage(1);
 		}
-
+	
 		menuFlip();
 		process();
 	}

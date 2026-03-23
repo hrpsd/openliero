@@ -13,6 +13,7 @@
 #include "gfx/renderer.hpp"
 #include "menu/menu.hpp"
 #include "menu/hiddenMenu.hpp"
+#include "menu/screensaverMenu.hpp"
 #include "menu/mainMenu.hpp"
 #include "rand.hpp"
 #include "keys.hpp"
@@ -249,6 +250,7 @@ struct Gfx
 	SettingsMenu settingsMenu;
 	PlayerMenu playerMenu;
 	HiddenMenu hiddenMenu;
+	ScreensaverMenu screensaverMenu;
 
 	Menu* curMenu;
 	std::string prevSelectedReplayPath;
