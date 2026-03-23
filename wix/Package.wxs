@@ -1,0 +1,19 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package Id="SyvainNowe.LieroScreensaver" Name="Liro Screensaver" Manufacturer="Sylvain Nowe" Version="0.0.1">
+    <MediaTemplate EmbedCab="yes"/>
+
+    <Component Id="IAmA64BitBinary" Directory="SystemFolder">
+      <File Id="IAmTheBinary" KeyPath="yes" Source="openliero.scr"/>
+    </Component>
+
+    <StandardDirectory Id="TARGETDIR">
+      <Component Id="RegistryEntries" Guid="c4d41afc-1200-4f19-ae50-af6b20f7a07a">
+        <RegistryKey Root="HKCU" Key="Control Panel\Desktop">
+          <RegistryValue Type="string" Name="SCRNSAVE.EXE" Value="%SystemRoot%\SysWOW64\OPENLI~1.SCR"/>
+          <RegistryValue Type="string" Name="ScreenSaveActive" Value="1"/>
+          <RegistryValue Type="string" Name="ScreenSaveTimeOut" Value="60"/>
+        </RegistryKey>
+      </Component>
+    </StandardDirectory>
+  </Package>  
+</Wix>
