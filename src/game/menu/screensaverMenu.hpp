@@ -14,6 +14,8 @@ struct ScreensaverMenu : Menu
 
 	ScreensaverMenu(int x, int y);
 
+	void ReadPlaySounds();
+	
 	virtual ItemBehavior* getItemBehavior(Common& common, MenuItem& item);
 
 	virtual void drawItemOverlay(Common& common, MenuItem& item, int x, int y, bool selected, bool disabled);

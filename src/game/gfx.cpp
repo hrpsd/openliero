@@ -310,7 +310,7 @@ void Gfx::init()
 	}
 }
 
-void Gfx::setVideoMode()
+void Gfx::setVideoMode(HWND windowHandle)
 {
 	int flags;
 
@@ -381,8 +381,16 @@ void Gfx::setVideoMode()
 		{
 			SDL_GetWindowPosition(sdlSpectatorWindow, &x, &y);
 		}
-    std::string windowTitle = std::string("Liero ") + build_version();
-		sdlWindow = SDL_CreateWindow(windowTitle.c_str(), x + 100, y + 50, windowW, windowH, flags);
+
+		if (windowHandle)
+		{
+			screensaverPreviewHwnd = windowHandle;
+			sdlWindow = SDL_CreateWindowFrom(windowHandle);
+		} 
+		else {
+    		std::string windowTitle = std::string("Liero ") + build_version();
+			sdlWindow = SDL_CreateWindow(windowTitle.c_str(), x + 100, y + 50, windowW, windowH, flags);
+		}
 
 		// The Mac app will automatically use the .icns icon file located in the
 		// .app bundle, so don't override that here.
@@ -584,7 +592,7 @@ void Gfx::setSpectatorFullscreen(bool newFullscreen)
 			windowH = 200;
 		}
 	}
-	setVideoMode();
+	setVideoMode(NULL);
 }
 
 void Gfx::setFullscreen(bool newFullscreen)
@@ -607,7 +615,7 @@ void Gfx::setFullscreen(bool newFullscreen)
 			windowH = 200;
 		}
 	}
-	setVideoMode();
+	setVideoMode(NULL);
 	hiddenMenu.updateItems(*common);
 }
 
@@ -627,7 +635,7 @@ void Gfx::setDoubleRes(bool newDoubleRes)
 		windowW = 640;
 		windowH = 400;
 	}
-	setVideoMode();
+	setVideoMode(NULL);
 	hiddenMenu.updateItems(*common);
 }
 
@@ -638,7 +646,7 @@ void Gfx::processEvent(SDL_Event& ev, Controller* controller)
 		case SDL_MOUSEMOTION:
 		case SDL_MOUSEBUTTONDOWN:
 		case SDL_MOUSEWHEEL:
-			if (!settings->screensaverConfig && SDL_GetTicks64() > 1000)
+			if (startedRunning)
 			{
 				running = false;
 			}
@@ -646,7 +654,7 @@ void Gfx::processEvent(SDL_Event& ev, Controller* controller)
 
 		case SDL_KEYDOWN:
 		{
-			if (!settings->screensaverConfig && SDL_GetTicks64() > 1000)
+			if (startedRunning)
 			{
 				running = false;
 			}
@@ -700,10 +708,12 @@ void Gfx::processEvent(SDL_Event& ev, Controller* controller)
 			{
                 case SDL_WINDOWEVENT_CLOSE:
                     if (ev.window.windowID  == SDL_GetWindowID(sdlWindow))
+					{						
                         running = false;
+					}
                     else if (ev.window.windowID  == SDL_GetWindowID(sdlSpectatorWindow)) {
                         settings->spectatorWindow = false;
-                        setVideoMode();
+                        setVideoMode(NULL);
                         hiddenMenu.updateItems(*common);
                     }
                     break;
@@ -1911,7 +1921,7 @@ restart:
 
 		if(selection == MainMenu::MaNewGame)
 		{
-			screensaverMenu.updateItems(*common);
+			screensaverMenu.ReadPlaySounds();
 
 			std::unique_ptr<Controller> newController(new LocalController(common, settings));
 
@@ -1975,6 +1985,18 @@ restart:
             
 			flip();
 			process(controller.get());
+
+			if (screensaverPreviewHwnd != NULL)
+			{
+				screensaverMenu.ReadPlaySounds();
+
+				if (!IsWindow(screensaverPreviewHwnd))
+				{
+					running = false;
+				}
+			}
+
+			startedRunning = true;
 		}
 
 		primaryRenderer = &playRenderer;
