@@ -46,7 +46,7 @@ ItemBehavior* HiddenMenu::getItemBehavior(Common& common, MenuItem& item)
 		case SingleScreenReplay:
 			return new BooleanSwitchBehavior(common, gfx.settings->singleScreenReplay);
 		case SpectatorWindow:
-			return new BooleanSwitchBehavior(common, gfx.settings->spectatorWindow, [](bool v) { gfx.settings->spectatorWindow = v; gfx.setVideoMode(); });
+			return new BooleanSwitchBehavior(common, gfx.settings->spectatorWindow, [](bool v) { gfx.settings->spectatorWindow = v; gfx.setVideoMode(NULL); });
 
 		default:
 			return Menu::getItemBehavior(common, item);

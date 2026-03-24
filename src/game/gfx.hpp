@@ -6,6 +6,8 @@
 #include <cstdio>
 #include <cassert>
 
+#include <windows.h>
+
 #include "gfx/font.hpp"
 #include "gfx/blit.hpp"
 #include "gfx/color.hpp"
@@ -119,7 +121,7 @@ struct Gfx
 	Gfx();
 
 	void init();
-	void setVideoMode();
+	void setVideoMode(HWND windowHandle);
 	void onWindowResize(Uint32 windowId);
 	void loadMenus();
 
@@ -284,6 +286,7 @@ struct Gfx
 	bool running;
 	bool spectatorFullscreen, doubleRes;
 	bool screensaver;
+	HWND screensaverPreviewHwnd = NULL;
 
 	uint64_t lastFrame;
 	unsigned menuCycles;

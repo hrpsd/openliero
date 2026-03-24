@@ -31,7 +31,7 @@ void SetVal (HKEY hKey, LPCTSTR lpValue, const char * data, int lol) {
     RegSetValueEx (hKey, lpValue, 0, REG_SZ, (LPBYTE)data, lol);
 }
 
-void ReadPlaySounds() {
+void ScreensaverMenu::ReadPlaySounds() {
 	HKEY handler = OpenKey(HKEY_CURRENT_USER, "Software\\OpenLiero\\Screensaver");
 			
 	std::string result = std::string(1024, 0);
@@ -48,7 +48,9 @@ void ReadPlaySounds() {
 		gfx.settings->playSounds = true;
 	} else {
 		gfx.settings->playSounds = result[0] == '1';
-	}	
+	}
+
+	RegCloseKey(handler);
 }
 
 ScreensaverMenu::ScreensaverMenu(int x, int y)
@@ -69,6 +71,7 @@ ItemBehavior* ScreensaverMenu::getItemBehavior(Common& common, MenuItem& item)
 				gfx.settings->playSounds = v;
 				HKEY handler = OpenKey(HKEY_CURRENT_USER, "Software\\OpenLiero\\Screensaver");
 				SetVal(handler, "PlaySounds", v ? "1" : "0", 1);
+				RegCloseKey(handler);
 			 });
 		}
 		default:
@@ -78,7 +81,6 @@ ItemBehavior* ScreensaverMenu::getItemBehavior(Common& common, MenuItem& item)
 
 void ScreensaverMenu::onUpdate()
 {
-	ReadPlaySounds();
 }
 
 void ScreensaverMenu::drawItemOverlay(Common& common, MenuItem& item, int x, int y, bool selected, bool disabled)

@@ -17,6 +17,8 @@
 #include <exception>
 #include <gvl/math/cmwc.hpp>
 
+int InstancesRunning __attribute__((section(".oneinst"), shared)) = 0;
+
 int gameEntry(int argc, char* argv[])
 try
 {
@@ -24,7 +26,8 @@ try
 	gfx.rand.seed(Uint32(std::time(0)));
 
 	bool tcSet = false;
-	bool showScreensaverConfig = true;
+	bool showScreensaverConfig = false;
+	HWND windowHandle = NULL;
 
 	std::string tcName;
 	std::string configPath; // Default to current dir
@@ -44,18 +47,21 @@ try
 				break;
 			}
 		}
-		else if (std::strcmp(argv[i], "/c") == 0)
+		else if (std::strncmp(argv[i], "/c", 2) == 0)
 		{
 			showScreensaverConfig = true;
 			
 		}
 		else if (std::strcmp(argv[i], "/p") == 0)
 		{
-			return 0;
-		}
-		else if (std::strcmp(argv[i], "/s") == 0) 
-		{
-			showScreensaverConfig = false;
+			CreateMutexA(0, 1, "Global\\LieroScreensaverPreviewMutex");
+    		if (GetLastError() != ERROR_ALREADY_EXISTS)
+			{
+				windowHandle = (HWND)atoi(argv[i + 1]);
+			}
+			else {
+				return 0;
+			}
 		}
 		else
 		{
@@ -102,7 +108,7 @@ try
 	gfx.common = common;
 	gfx.playRenderer.loadPalette(*common); // This gets the palette from common
 
-	gfx.setVideoMode();
+	gfx.setVideoMode(windowHandle);
 	sfx.init();
 
 	gfx.mainLoop();
