@@ -1,6 +1,6 @@
 # Open Liero
 
-This is the home repository for Open Liero for the Mac App Store and the Liero Screensaver for Windows projects. The projects are developed and published by Sylvain Nowé. They are a continuation of the openliero project, originally located at [github.com/gliptic/liero][0] then [github.com/openliero/openliero][0], also known as Liero 1.36.
+This branch is the home repository for the Liero Screensaver for Windows project. The project is developed and published by Sylvain Nowé. It is a fork from the openliero project, originally located at [github.com/gliptic/liero][0] then [github.com/openliero/openliero][0], also known as Liero 1.36.
 
 The main ambition is to keep Liero running as faithfully as possible on
 modern machines, although we are not opposed to making careful changes
