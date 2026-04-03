@@ -258,7 +258,7 @@ struct Worm : gvl::shared {
     controlStates.set(control, !controlStates[control]);
   }
 
-  int minimapColor() const { return 129 + index * 4; }
+  int minimapColor() const { return 129 + (index % 2) * 4; }
 
   void beginRespawn(Game& game);
   void doRespawning(Game& game);

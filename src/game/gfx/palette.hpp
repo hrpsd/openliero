@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <gvl/support/debug.hpp>
 #include "color.hpp"
+#include "settings.hpp"
 
 struct Settings;
 struct WormSettings;
@@ -14,7 +15,7 @@ struct octet_reader;
 
 struct Palette
 {
-	static int const wormColourIndexes[2];
+	static int const wormColourIndexes[NUM_WORMS];
 
 	Color entries[256];
 

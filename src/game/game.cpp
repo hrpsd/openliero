@@ -19,7 +19,7 @@ Game::Game(
 : common(common)
 , soundPlayer(soundPlayer)
 , settings(settingsInit)
-, statsRecorder(new NormalStatsRecorder)
+//, statsRecorder(new NormalStatsRecorder)
 , level(*common)
 , screenFlash(0)
 , gotChanged(false)
@@ -281,7 +281,7 @@ void checkMap(Game& game) {
 
 void Game::processFrame()
 {
-	statsRecorder->preTick(*this);
+	//statsRecorder->preTick(*this);
 
 	if(screenFlash > 0)
 		--screenFlash;
@@ -334,8 +334,11 @@ void Game::processFrame()
 
 			bool down = false;
 
-			if(wormByIdx(0)->killedTimer > 16 || wormByIdx(1)->killedTimer > 16)
+			for (int j = 0; j < NUM_WORMS; j++)
+			{
+			if(wormByIdx(j)->killedTimer > 16)
 				down = true;
+			}
 
 			if(down)
 			{
@@ -511,7 +514,7 @@ void Game::processFrame()
 		worms[i]->prevControlStates = worms[i]->controlStates;
 	}
 
-	statsRecorder->tick(*this);
+	//statsRecorder->tick(*this);
 }
 
 void Game::focus(Renderer& renderer)
@@ -526,7 +529,7 @@ void Game::updateSettings(Renderer& renderer)
 	for(std::size_t i = 0; i < worms.size(); ++i)
 	{
 		Worm& worm = *worms[i];
-		if(worm.index >= 0 && worm.index < 2)
+		if(worm.index >= 0 && worm.index < NUM_WORMS)
 			renderer.origpal.setWormColour(worm.index, *worm.settings);
 	}
 }
@@ -729,7 +732,7 @@ void Game::postClone(Game& original, bool complete)
 	}
 	else
 	{
-		statsRecorder.reset(new NormalStatsRecorder(static_cast<NormalStatsRecorder&>(*statsRecorder)));
+		//statsRecorder.reset(new NormalStatsRecorder(static_cast<NormalStatsRecorder&>(*statsRecorder)));
 
 		for (auto& vp : viewports)
 		{

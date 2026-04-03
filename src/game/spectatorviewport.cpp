@@ -42,13 +42,13 @@ void SpectatorViewport::draw(Game& game, Renderer& renderer, GameState state, bo
 	for (std::size_t i = 0; i < game.worms.size(); ++i)
 	{
 		Worm const& worm = *game.worms[i];
-		int offsetX = offs.x / (i + 1);
+		int offsetX = offs.x / ((i & 1) + 1);
 		// fix misalignment. Not sure why this is needed
 		if (i == 1)
 		{
 			offsetX += 2;
 		}
-		int offsetWeaponListX = centerX - 15 + (i == 0 ? -90 : 60);
+		int offsetWeaponListX = centerX - 15 + ((i & 1) == 0 ? -90 : 60);
 		if (worm.visible)
 		{
 			int lifebarWidth = worm.health * 100 / worm.settings->health;
@@ -224,7 +224,7 @@ void SpectatorViewport::draw(Game& game, Renderer& renderer, GameState state, bo
 				int tempX = ftoi(worm.pos.x) - 7 + offs.x;
 				int tempY = ftoi(worm.pos.y) - 5 + offs.y;
 
-				blitImageTrans(renderer.bmp, common.wormSpriteObj(worm.currentFrame, worm.direction, worm.index), tempX, tempY, game.cycles);
+				blitImageTrans(renderer.bmp, common.wormSpriteObj(worm.currentFrame, worm.direction, worm.index % 2), tempX, tempY, game.cycles);
 			}
 		}
 
@@ -527,9 +527,9 @@ void SpectatorViewport::draw(Game& game, Renderer& renderer, GameState state, bo
 			}
 
 
-			blitImage(renderer.bmp, common.wormSpriteObj(w.currentFrame, w.direction, w.index), tempX, tempY);
+			blitImage(renderer.bmp, common.wormSpriteObj(w.currentFrame, w.direction, w.index % 2), tempX, tempY);
 			if(game.settings->shadow)
-				blitShadowImage(common, renderer.bmp, common.wormSprite(w.currentFrame, w.direction, w.index), tempX - 3, tempY + 3, 16, 16);
+				blitShadowImage(common, renderer.bmp, common.wormSprite(w.currentFrame, w.direction, w.index % 2), tempX - 3, tempY + 3, 16, 16);
 		}
 
 		if (w.ai)

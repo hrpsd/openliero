@@ -1,3 +1,4 @@
+#include "common.hpp"
 #include "worm.hpp"
 #include "game.hpp"
 #include "mixer/player.hpp"
@@ -13,6 +14,10 @@
 
 #include <gvl/crypt/gash.hpp>
 #include <gvl/io2/fstream.hpp>
+
+#include "gfx.hpp"
+#include "controller/localController.hpp"
+#include "viewport.hpp"
 
 struct Point
 {
@@ -469,7 +474,7 @@ void Worm::process(Game& game)
 						index, 0);
 				}
 
-				game.statsRecorder->afterDeath(this);
+				//game.statsRecorder->afterDeath(this);
 
 				release(Fire);
 			}
@@ -492,7 +497,7 @@ void Worm::process(Game& game)
 			if(killedTimer == 0 && !game.quickSim) // Don't respawn in quicksim
 				beginRespawn(game);
 
-			if(killedTimer < 0)
+				if(killedTimer < 0)
 				doRespawning(game);
 		}
 	}
@@ -797,6 +802,31 @@ void Worm::initWeapons(Game& game)
 
 void Worm::beginRespawn(Game& game)
 {
+    	if (game.viewports[0]->wormIdx == index) {
+			do
+			{
+			    game.viewports[0]->wormIdx = rand() % NUM_WORMS;	/* code */
+			}
+			while (game.viewports[0]->wormIdx == game.viewports[1]->wormIdx);			
+		}
+
+		if (game.viewports[1]->wormIdx == index) {
+			do
+			{
+			    game.viewports[1]->wormIdx = rand() % NUM_WORMS;	/* code */
+			}
+			while (game.viewports[1]->wormIdx == game.viewports[0]->wormIdx);			
+		}
+	
+
+	LocalController *lctrl = (LocalController*)gfx.controller.get();
+	ai = lctrl->createAi(1 + (rand() & 1), *this, *gfx.settings);
+
+	for(int j = 0; j < NUM_WEAPONS; ++j)
+	{
+		settings->weapons[j] = gfx.rand(1, 41);
+	}
+
 	Common& common = *game.common;
 
 	auto temp = ftoi(pos);
@@ -805,9 +835,9 @@ void Worm::beginRespawn(Game& game)
 
 	auto enemy = temp;
 
-	if(game.worms.size() == 2)
+	if(game.worms.size() > 1)
 	{
-		enemy = ftoi(game.worms[index ^ 1]->pos);
+		enemy = ftoi(game.worms[(index + 1) % NUM_WORMS]->pos);
 	}
 
 	int trials = 0;
@@ -896,7 +926,7 @@ void Worm::doRespawning(Game& game)
 			direction = 1;
 		}
 
-		game.statsRecorder->afterSpawn(this);
+		//game.statsRecorder->afterSpawn(this);
 	}
 }
 

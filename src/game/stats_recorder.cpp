@@ -64,6 +64,8 @@ void NormalStatsRecorder::damagePotential(Worm* byWorm, WormWeapon* weapon, int 
 
 void NormalStatsRecorder::damageDealt(Worm* byWorm, WormWeapon* weapon, Worm* toWorm, int hp, bool hasHit)
 {
+	return;
+
 	assert(toWorm);
 
 	auto& w = worms[toWorm->index];
@@ -151,6 +153,8 @@ void NormalStatsRecorder::preTick(Game& game)
 
 void NormalStatsRecorder::tick(Game& game)
 {
+	return;
+	
 	auto frameEnd = std::chrono::steady_clock::now();
 	processTimeTotal += std::chrono::duration_cast<std::chrono::milliseconds>(frameEnd - frameStart).count();
 

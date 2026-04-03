@@ -178,7 +178,7 @@ void Viewport::draw(Game& game, Renderer& renderer, GameState state, bool isRepl
 
 		int color = stateColours[game.holdazone.holderIdx != worm.index][state];
 
-		common.font.drawText(renderer.bmp, timeToString(worm.timer), 5 * multiplier, 106 * multiplier + 84 * worm.index * multiplier, renderer.renderResY - 39, color);
+		common.font.drawText(renderer.bmp, timeToString(worm.timer), 5 * multiplier, 106 * multiplier + 84 * (worm.index % 2) * multiplier, renderer.renderResY - 39, color);
 	}
 	break;
 
@@ -192,7 +192,7 @@ void Viewport::draw(Game& game, Renderer& renderer, GameState state, bool isRepl
 
 		int color = stateColours[game.lastKilledIdx != worm.index][state];
 
-		common.font.drawText(renderer.bmp, timeToString(worm.timer), 5 * multiplier, 106 * multiplier + 84 * worm.index * multiplier, renderer.renderResY - 39, color);
+		common.font.drawText(renderer.bmp, timeToString(worm.timer), 5 * multiplier, 106 * multiplier + 84 * (worm.index % 2) * multiplier, renderer.renderResY - 39, color);
 	}
 	break;
 	}
@@ -557,9 +557,9 @@ void Viewport::draw(Game& game, Renderer& renderer, GameState state, bool isRepl
 				}
 
 
-				blitImage(renderer.bmp, common.wormSpriteObj(w.currentFrame, w.direction, w.index), tempX, tempY);
+				blitImage(renderer.bmp, common.wormSpriteObj(w.currentFrame, w.direction, w.index % 2), tempX, tempY);
 				if(game.settings->shadow)
-					blitShadowImage(common, renderer.bmp, common.wormSprite(w.currentFrame, w.direction, w.index), tempX - 3, tempY + 3, 16, 16);
+					blitShadowImage(common, renderer.bmp, common.wormSprite(w.currentFrame, w.direction, w.index % 2), tempX - 3, tempY + 3, 16, 16);
 			}
 
 			if (w.ai)

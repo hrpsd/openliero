@@ -11,6 +11,7 @@
 #include "settings.hpp"
 #include "sobject.hpp"
 #include "weapon.hpp"
+#include "settings.hpp"
 
 #if ENABLE_TRACING
 #include <gvl/io2/fstream.hpp>

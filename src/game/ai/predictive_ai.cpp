@@ -3,6 +3,7 @@
 #include "predictive_ai.hpp"
 
 #include "../game.hpp"
+#include "../common.hpp"
 #include "../gfx/blit.hpp"
 #include "../gfx/renderer.hpp"
 #include "../stats.hpp"
@@ -448,7 +449,7 @@ double EvaluateResult::weightedScore() const
 
 void SimpleAI::process(Game& game, Worm& worm)
 {
-	Worm* target = game.wormByIdx(worm.index ^ 1);
+	Worm* target = game.wormByIdx((worm.index + 1) % NUM_WORMS);
 
 	auto cs = worm.controlStates;
 
@@ -715,7 +716,7 @@ void FollowAI::process(Game& game, Worm& worm)
 {
 	Common& common = *game.common;
 
-	Worm* target = game.worms[worm.index ^ 1];
+	Worm* target = game.worms[(worm.index + 1) % NUM_WORMS];
 
 	{
 		int targetx = ftoi(target->pos.x), targety = ftoi(target->pos.y);
@@ -882,7 +883,7 @@ Worm::ControlState InputContext::update(InputState newState, Game& game, Worm* w
 	else
 		hiddenFrames = 0;
 
-	facingEnemy = (game.worms[worm->index ^ 1]->pos.x > worm->pos.x) == worm->direction;
+		facingEnemy = (game.worms[(worm->index + 1) % 3]->pos.x > worm->pos.x) == worm->direction;
 	ninjaropeOut = worm->ninjarope.out;
 
 	return cs;

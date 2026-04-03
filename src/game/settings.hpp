@@ -9,6 +9,8 @@
 #include "version.hpp"
 #include "worm.hpp"
 
+#define NUM_WORMS 4
+
 // We isolate extensions for the benefit of the .dat loader.
 // It can then easily reset the extensions if they fail to load.
 struct Extensions {
@@ -81,7 +83,7 @@ struct Settings : gvl::shared, Extensions {
   bool screensaverConfig;
   bool playSounds;
 
-  std::shared_ptr<WormSettings> wormSettings[2];
+  std::shared_ptr<WormSettings> wormSettings[NUM_WORMS];
 
   gvl::gash::value_type hash;
 };
@@ -107,6 +109,12 @@ void archive_liero(Archive ar, Settings& settings, Rand& rand) {
       .b(settings.map)
       .ui8(settings.wormSettings[0]->controller)
       .ui8(settings.wormSettings[1]->controller)
+      #if NUM_WORMS == 3 || NUM_WORMS == 4
+      .ui8(settings.wormSettings[2]->controller)
+      #endif
+      #if NUM_WORMS == 4
+      .ui8(settings.wormSettings[3]->controller)
+      #endif
       .b(settings.randomLevel)
       .ui16_le(settings.blood)
       .ui8(settings.gameMode)
@@ -118,21 +126,28 @@ void archive_liero(Archive ar, Settings& settings, Rand& rand) {
     settings.wormSettings[0]->controller %= 3;
   if (ar.in)
     settings.wormSettings[1]->controller %= 3;
-
+  #if NUM_WORMS == 3 || NUM_WORMS == 4
+  if (ar.in)
+    settings.wormSettings[2]->controller %= 3;
+  #endif
+  #if NUM_WORMS == 4
+  if (ar.in)
+    settings.wormSettings[3]->controller %= 3;
+  #endif
   for (int i = 0; i < 40; ++i) {
     ar.ui8(settings.weapTable[i]);
     if (ar.in)
       settings.weapTable[i] = limit<0, 3>(settings.weapTable[i]);
   }
 
-  for (int i = 0; i < 2; ++i)
+  for (int i = 0; i < NUM_WORMS; ++i)
     for (int j = 0; j < 3; ++j) {
       ar.ui8(settings.wormSettings[i]->rgb[j]);
       if (ar.in)
         settings.wormSettings[i]->rgb[j] &= 63;
     }
 
-  for (int i = 0; i < 2; ++i) {
+  for (int i = 0; i < NUM_WORMS; ++i) {
     for (int j = 0; j < 5; ++j) {
       ar.ui8(settings.wormSettings[i]->weapons[j]);
     }
@@ -140,8 +155,14 @@ void archive_liero(Archive ar, Settings& settings, Rand& rand) {
 
   ar.ui16_le(settings.wormSettings[0]->health);
   ar.ui16_le(settings.wormSettings[1]->health);
+  #if NUM_WORMS == 3 || NUM_WORMS == 4
+  ar.ui16_le(settings.wormSettings[2]->health);
+  #endif
+  #if NUM_WORMS == 4
+  ar.ui16_le(settings.wormSettings[3]->health);
+  #endif
 
-  for (int i = 0; i < 2; ++i) {
+  for (int i = 0; i < NUM_WORMS; ++i) {
     if (settings.wormSettings[i]->randomName && ar.out) {
       std::string empty;
       ar.pascal_str(empty, 21);
@@ -163,7 +184,7 @@ void archive_liero(Archive ar, Settings& settings, Rand& rand) {
     ar.ui8(lieroStr[i]);
   }
 
-  for (int i = 0; i < 2; ++i) {
+  for (int i = 0; i < NUM_WORMS; ++i) {
     for (int j = 0; j < 7; ++j) {
       uint32_t v;
       if (ar.out) {
@@ -211,7 +232,7 @@ void archive_liero(Archive ar, Settings& settings, Rand& rand) {
       }
     }
 
-    for (int i = 0; i < 2; ++i) {
+    for (int i = 0; i < NUM_WORMS; ++i) {
       WormSettings& ws = *settings.wormSettings[i];
       for (int c = 0; c < WormSettings::MaxControlEx; ++c) {
         gvl::enable_when(ar, fileExtensionVersion >= 3)

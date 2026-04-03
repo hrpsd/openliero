@@ -32,6 +32,7 @@ struct LocalController : CommonController
 	Level* currentLevel();
 	Game* currentGame();
 	bool running();
+	std::shared_ptr<WormAI> createAi(int controller, Worm& worm, Settings& settings);
 
 	Game game;
 	std::unique_ptr<WeaponSelection> ws;

@@ -31,8 +31,8 @@ void Weapon::fire(Game& game, int angle, fixedvec vel, int speed, fixedvec pos, 
 	LTRACE(fire, obj - game.wobjects.arr, cypo, pos.y);
 
 	Worm* owner = game.wormByIdx(ownerIdx);
-	game.statsRecorder->damagePotential(owner, ww, hitDamage);
-	game.statsRecorder->shot(owner, ww);
+	//game.statsRecorder->damagePotential(owner, ww, hitDamage);
+	//game.statsRecorder->shot(owner, ww);
 
 	obj->vel = cossinTable[angle] * speed / 100 + vel;
 
@@ -379,9 +379,9 @@ void WObject::process(Game& game)
 				worm.vel += vel * w.blowAway / 100;
 
 				game.doDamage(worm, w.hitDamage, ownerIdx);
-				game.statsRecorder->damageDealt(owner, firedBy, &worm, w.hitDamage, hasHit);
+				//game.statsRecorder->damageDealt(owner, firedBy, &worm, w.hitDamage, hasHit);
 				if (!hasHit)
-					game.statsRecorder->hit(owner, firedBy, &worm);
+					;//game.statsRecorder->hit(owner, firedBy, &worm);
 				hasHit = true;
 
 				int bloodAmount = w.bloodOnHit * game.settings->blood / 100;
