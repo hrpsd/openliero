@@ -22,10 +22,11 @@ bool IntegerBehavior::onLeftRight(Menu& menu, MenuItem& item, int dir)
 	if(newV != v)
 	{
 		v = newV;
+		set(v);
 		onUpdate(menu, item);
 	}
 
-	return true;
+	return false;
 }
 
 int IntegerBehavior::onEnter(Menu& menu, MenuItem& item)
@@ -41,6 +42,7 @@ int IntegerBehavior::onEnter(Menu& menu, MenuItem& item)
 		x += menu.valueOffsetX;
 		int digits = 1 + int(std::floor(std::log10(double(max))));
 		gfx.inputInteger(v, min, max, digits, x + 2, y);
+		set(v);
 		onUpdate(menu, item);
 	}
 	return -1;

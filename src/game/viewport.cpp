@@ -86,11 +86,11 @@ void Viewport::process(Game& game)
 	}*/
 }
 
-void Viewport::draw(Game& game, Renderer& renderer, GameState state, bool isReplay)
+void Viewport::drawHUD(Game& game, Renderer& renderer, GameState state, bool isReplay)
 {
 	Common& common = *game.common;
 	Worm& worm = *game.wormByIdx(wormIdx);
-	int multiplier = renderer.renderResX / 320;
+	int multiplier = renderer.renderResX / 355;
 	int centerX = renderer.renderResX / 2;
 
 	if(worm.visible)
@@ -196,6 +196,14 @@ void Viewport::draw(Game& game, Renderer& renderer, GameState state, bool isRepl
 	}
 	break;
 	}
+
+}
+
+void Viewport::draw(Game& game, Renderer& renderer, GameState state, bool isReplay)
+{
+	Common& common = *game.common;
+	Worm& worm = *game.wormByIdx(wormIdx);
+	int centerX = renderer.renderResX / 2;
 
 	gvl::ivec2 renderPos(x, y);
 

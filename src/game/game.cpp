@@ -129,6 +129,10 @@ void Game::drawViewports(Renderer& renderer, GameState state, bool isReplay)
 	{
 		viewports[i]->draw(*this, renderer, state, isReplay);
 	}
+	for(std::size_t i = 0; i < viewports.size(); ++i)
+	{
+		viewports[i]->drawHUD(*this, renderer, state, isReplay);
+	}
 }
 
 void Game::drawSpectatorViewports(Renderer& renderer, GameState state, bool isReplay)
@@ -334,10 +338,10 @@ void Game::processFrame()
 
 			bool down = false;
 
-			for (int j = 0; j < NUM_WORMS; j++)
+			for (int j = 0; j < worms.size(); j++)
 			{
-			if(wormByIdx(j)->killedTimer > 16)
-				down = true;
+				if(wormByIdx(j)->killedTimer > 16)
+					down = true;
 			}
 
 			if(down)
@@ -529,7 +533,7 @@ void Game::updateSettings(Renderer& renderer)
 	for(std::size_t i = 0; i < worms.size(); ++i)
 	{
 		Worm& worm = *worms[i];
-		if(worm.index >= 0 && worm.index < NUM_WORMS)
+		if(worm.index >= 0 && worm.index < worms.size())
 			renderer.origpal.setWormColour(worm.index, *worm.settings);
 	}
 }

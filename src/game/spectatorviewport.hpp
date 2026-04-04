@@ -16,6 +16,7 @@ struct SpectatorViewport : Viewport
 	{
 	}
 
+	void drawHUD(Game& game, Renderer& renderer, GameState state, bool isReplay);
 	void draw(Game& game, Renderer& renderer, GameState state, bool isReplay);
 	void process(Game& game);
 };

@@ -802,10 +802,12 @@ void Worm::initWeapons(Game& game)
 
 void Worm::beginRespawn(Game& game)
 {
-    	if (game.viewports[0]->wormIdx == index) {
+	if (game.worms.size() > 2)
+	{
+		if (game.viewports[0]->wormIdx == index) {
 			do
 			{
-			    game.viewports[0]->wormIdx = rand() % NUM_WORMS;	/* code */
+				game.viewports[0]->wormIdx = rand() % game.worms.size();	/* code */
 			}
 			while (game.viewports[0]->wormIdx == game.viewports[1]->wormIdx);			
 		}
@@ -813,11 +815,14 @@ void Worm::beginRespawn(Game& game)
 		if (game.viewports[1]->wormIdx == index) {
 			do
 			{
-			    game.viewports[1]->wormIdx = rand() % NUM_WORMS;	/* code */
+				game.viewports[1]->wormIdx = rand() % game.worms.size();	/* code */
 			}
 			while (game.viewports[1]->wormIdx == game.viewports[0]->wormIdx);			
 		}
-	
+		
+		game.wormByIdx(game.viewports[0]->wormIdx)->statsX = 0;
+		game.wormByIdx(game.viewports[1]->wormIdx)->statsX = 175 + 5;
+	}
 
 	LocalController *lctrl = (LocalController*)gfx.controller.get();
 	ai = lctrl->createAi(1 + (rand() & 1), *this, *gfx.settings);
@@ -837,7 +842,7 @@ void Worm::beginRespawn(Game& game)
 
 	if(game.worms.size() > 1)
 	{
-		enemy = ftoi(game.worms[(index + 1) % NUM_WORMS]->pos);
+		enemy = ftoi(game.worms[(index + 1) % game.worms.size()]->pos);
 	}
 
 	int trials = 0;

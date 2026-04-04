@@ -22,6 +22,6 @@ struct Renderer
 	int fadeValue;
 	// Resolution to render the game at. This should be modified via
 	// setRenderResolution() to ensure that the bitmap is re-allocated
-	int renderResX = 320;
+	int renderResX = 355;
 	int renderResY = 200;
 };

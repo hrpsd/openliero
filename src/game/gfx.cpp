@@ -277,14 +277,14 @@ Gfx::Gfx()
 , settingsMenu(178, 20)
 , playerMenu(178, 20)
 , hiddenMenu(178, 20)
-, screensaverMenu(178, 20)
+, screensaverMenu(200, 20)
 , curMenu(0)
 , sdlDrawSurface(0)
 , running(true)
 , screensaver(false)
 , doubleRes(true)
 , menuCycles(0)
-, windowW(320 * 2)
+, windowW(355 * 2)
 , windowH(200 * 2)
 , prevMag(0)
 , keyBufPtr(keyBuf)
@@ -298,8 +298,8 @@ void Gfx::init()
 	//SDL_ShowCursor(SDL_DISABLE);
 	lastFrame = SDL_GetTicks64();
 
-	playRenderer.init(320, 200);
-	singleScreenRenderer.init(640, 400);
+	playRenderer.init(355, 200);
+	singleScreenRenderer.init(711, 400);
 	// Joystick init
 	SDL_GameControllerEventState(SDL_ENABLE);
 	int numJoysticks = SDL_NumJoysticks();
@@ -454,7 +454,7 @@ void Gfx::onWindowResize(Uint32 windowID)
 		}
 		sdlTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888,
 			                           SDL_TEXTUREACCESS_STREAMING,
-			                           doubleRes ? 640 : 320,
+			                           doubleRes ? 711 : 355,
 		                         	   doubleRes ? 400 : 200);
 
 		if (sdlDrawSurface)
@@ -462,12 +462,12 @@ void Gfx::onWindowResize(Uint32 windowID)
 			SDL_FreeSurface(sdlDrawSurface);
 			sdlDrawSurface = NULL;
 		}
-		sdlDrawSurface = SDL_CreateRGBSurface(0, doubleRes ? 640 : 320,
+		sdlDrawSurface = SDL_CreateRGBSurface(0, doubleRes ? 711 : 355,
 		                         doubleRes ? 400 : 200, 32, 0, 0, 0, 0);
 		// linear for that old-school chunky look, but consider adding a user
 		// option for this
 		SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "linear");
-		SDL_RenderSetLogicalSize(sdlRenderer, doubleRes ? 640 : 320,
+		SDL_RenderSetLogicalSize(sdlRenderer, doubleRes ? 711 : 355,
 		                         doubleRes ? 400 : 200);
 	}
 	else
@@ -499,6 +499,7 @@ void Gfx::onWindowResize(Uint32 windowID)
 void Gfx::loadMenus()
 {
 	screensaverMenu.addItem(MenuItem(48, 7, "PLAY SOUNDS", ScreensaverMenu::PlaySounds));
+	screensaverMenu.addItem(MenuItem(48, 7, "WORMS COUNT", ScreensaverMenu::NumWorms));
 
 	hiddenMenu.addItem(MenuItem(48, 7, "FULLSCREEN (F11)", HiddenMenu::Fullscreen));
 	hiddenMenu.addItem(MenuItem(48, 7, "DOUBLE SIZE", HiddenMenu::DoubleRes));
@@ -583,12 +584,12 @@ void Gfx::setSpectatorFullscreen(bool newFullscreen)
 	{
 		if (doubleRes)
 		{
-			windowW = 640;
+			windowW = 711;
 			windowH = 400;
 		}
 		else
 		{
-			windowW = 320;
+			windowW = 355;
 			windowH = 200;
 		}
 	}
@@ -606,12 +607,12 @@ void Gfx::setFullscreen(bool newFullscreen)
 	{
 		if (doubleRes)
 		{
-			windowW = 640;
+			windowW = 711;
 			windowH = 400;
 		}
 		else
 		{
-			windowW = 320;
+			windowW = 355;
 			windowH = 200;
 		}
 	}
@@ -627,12 +628,12 @@ void Gfx::setDoubleRes(bool newDoubleRes)
 
 	if (!newDoubleRes)
 	{
-		windowW = 320;
+		windowW = 355;
 		windowH = 200;
 	}
 	else
 	{
-		windowW = 640;
+		windowW = 711;
 		windowH = 400;
 	}
 	setVideoMode(NULL);
@@ -1921,7 +1922,7 @@ restart:
 
 		if(selection == MainMenu::MaNewGame)
 		{
-			screensaverMenu.ReadPlaySounds();
+			screensaverMenu.ReadSettings();
 
 			std::unique_ptr<Controller> newController(new LocalController(common, settings));
 
@@ -1988,7 +1989,7 @@ restart:
 
 			if (screensaverPreviewHwnd != NULL)
 			{
-				screensaverMenu.ReadPlaySounds();
+				screensaverMenu.ReadSettings();
 
 				if (!IsWindow(screensaverPreviewHwnd))
 				{

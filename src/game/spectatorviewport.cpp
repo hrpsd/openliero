@@ -31,10 +31,13 @@ void SpectatorViewport::process(Game& game)
 
 }
 
+void SpectatorViewport::drawHUD(Game& game, Renderer& renderer, GameState state, bool isReplay)
+{}
+
 void SpectatorViewport::draw(Game& game, Renderer& renderer, GameState state, bool isReplay)
 {
 	Common& common = *game.common;
-	int multiplier = renderer.renderResX / 320;
+	int multiplier = renderer.renderResX / 355;
 	int centerX = renderer.renderResX / 2;
 	gvl::ivec2 renderPos(x, y);
 	fixedvec offs = rect.ul() - renderPos;

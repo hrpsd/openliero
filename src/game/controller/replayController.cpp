@@ -167,6 +167,8 @@ void ReplayController::changeState(GameState newState)
 		// replay. Yet.
 		game->worms[0]->statsX = 0;
 		game->worms[1]->statsX = 218;
+		game->worms[2]->statsX = 0;
+		game->worms[3]->statsX = 218;
 
 		// spectator viewport is always full size
 		// +68 on x to align the viewport in the middle

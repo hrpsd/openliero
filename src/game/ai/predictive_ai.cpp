@@ -449,7 +449,7 @@ double EvaluateResult::weightedScore() const
 
 void SimpleAI::process(Game& game, Worm& worm)
 {
-	Worm* target = game.wormByIdx((worm.index + 1) % NUM_WORMS);
+	Worm* target = game.wormByIdx((worm.index + 1) % game.worms.size());
 
 	auto cs = worm.controlStates;
 
@@ -716,7 +716,7 @@ void FollowAI::process(Game& game, Worm& worm)
 {
 	Common& common = *game.common;
 
-	Worm* target = game.worms[(worm.index + 1) % NUM_WORMS];
+	Worm* target = game.worms[(worm.index + 1) % game.worms.size()];
 
 	{
 		int targetx = ftoi(target->pos.x), targety = ftoi(target->pos.y);

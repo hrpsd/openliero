@@ -15,7 +15,7 @@ struct octet_reader;
 
 struct Palette
 {
-	static int const wormColourIndexes[NUM_WORMS];
+	static int const wormColourIndexes[MAX_WORMS];
 
 	Color entries[256];
 

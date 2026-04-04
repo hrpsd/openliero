@@ -9,12 +9,13 @@ struct ScreensaverMenu : Menu
 {
 	enum
 	{
-		PlaySounds
+		PlaySounds,
+		NumWorms
 	};
 
 	ScreensaverMenu(int x, int y);
 
-	void ReadPlaySounds();
+	void ReadSettings();
 	
 	virtual ItemBehavior* getItemBehavior(Common& common, MenuItem& item);
 

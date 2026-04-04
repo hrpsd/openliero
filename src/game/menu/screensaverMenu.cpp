@@ -1,5 +1,6 @@
 #include "ScreensaverMenu.hpp"
 
+#include "text.hpp"
 #include "arrayEnumBehavior.hpp"
 
 #include "../gfx.hpp"
@@ -31,7 +32,7 @@ void SetVal (HKEY hKey, LPCTSTR lpValue, const char * data, int lol) {
     RegSetValueEx (hKey, lpValue, 0, REG_SZ, (LPBYTE)data, lol);
 }
 
-void ScreensaverMenu::ReadPlaySounds() {
+void ScreensaverMenu::ReadSettings() {
 	HKEY handler = OpenKey(HKEY_CURRENT_USER, "Software\\OpenLiero\\Screensaver");
 			
 	std::string result = std::string(1024, 0);
@@ -50,6 +51,21 @@ void ScreensaverMenu::ReadPlaySounds() {
 		gfx.settings->playSounds = result[0] == '1';
 	}
 
+	result = std::string(1024, 0);
+	size  = result.size();
+	
+	if (RegQueryValueExA(handler,
+						"NumWorms",
+						NULL,
+						&Type,
+						(LPBYTE)&result[0],
+						&size ) == ERROR_FILE_NOT_FOUND)
+	{
+		gfx.settings->numWorms = 4;
+	} else {
+		gfx.settings->numWorms = std::stoi(result);
+	}
+
 	RegCloseKey(handler);
 }
 
@@ -61,18 +77,27 @@ ScreensaverMenu::ScreensaverMenu(int x, int y)
 
 ItemBehavior* ScreensaverMenu::getItemBehavior(Common& common, MenuItem& item)
 {
+	ReadSettings();
+	
 	switch(item.id)
 	{
 		case PlaySounds:
 		{
-			ReadPlaySounds();
-			
 			return new BooleanSwitchBehavior(common, gfx.settings->playSounds, [](bool v) {
 				gfx.settings->playSounds = v;
 				HKEY handler = OpenKey(HKEY_CURRENT_USER, "Software\\OpenLiero\\Screensaver");
 				SetVal(handler, "PlaySounds", v ? "1" : "0", 1);
 				RegCloseKey(handler);
 			 });
+		}
+		case NumWorms:
+		{
+			return new IntegerBehavior(common, gfx.settings->numWorms, 2, 8, 1, false, [](int v) {
+				HKEY handler = OpenKey(HKEY_CURRENT_USER, "Software\\OpenLiero\\Screensaver");
+				SetVal(handler, "NumWorms", toString(v).c_str(), 1);
+				RegCloseKey(handler);
+			});
+			
 		}
 		default:
 			return Menu::getItemBehavior(common, item);

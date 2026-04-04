@@ -25,7 +25,7 @@ Extensions::Extensions()
 , loadPowerlevelPalette(true)
 , bloodParticleMax(700)
 //, aiFrames(70*2), aiMutations(2)
-, aiFrames(70*2 * 2), aiMutations(2 * 2)
+, aiFrames(70*2), aiMutations(2)
 , aiTraces(false)
 , aiParallels(3)
 , fullscreen(false)
@@ -51,14 +51,15 @@ Settings::Settings()
 , lives(10000)
 , loadingTime(100)
 , randomLevel(true)
-, map(true)
+, map(false)
 , screenSync(true)
 , playSounds(true)
 , screensaverConfig(true)
+, numWorms(2)
 {
 	std::memset(weapTable, 0, sizeof(weapTable));
 
-	for (int i = 0; i < NUM_WORMS; i++)
+	for (int i = 0; i < MAX_WORMS; i++)
 	{
 		wormSettings[i].reset(new WormSettings);
 		wormSettings[i]->color = (i & 1) ? 41 : 32;
@@ -66,31 +67,31 @@ Settings::Settings()
 	}
 
 
-	unsigned char defControls[NUM_WORMS][7] =
+	unsigned char defControls[MAX_WORMS][7] =
 	{
 		{0x13, 0x21, 0x20, 0x22, 0x1D, 0x2A, 0x38},
 		{0xA0, 0xA8, 0xA3, 0xA5, 0x75, 0x90, 0x36},
-		#if NUM_WORMS == 3 || NUM_WORMS == 4
 		{0x14, 0x22, 0x23, 0x24, 0x25, 0x26, 0x27},
-		#endif
-		#if NUM_WORMS == 4
+		{0x28, 0x29, 0x30, 0x31, 0x32, 0x33, 0x34},
+		{0x28, 0x29, 0x30, 0x31, 0x32, 0x33, 0x34},
+		{0x28, 0x29, 0x30, 0x31, 0x32, 0x33, 0x34},
+		{0x28, 0x29, 0x30, 0x31, 0x32, 0x33, 0x34},
 		{0x28, 0x29, 0x30, 0x31, 0x32, 0x33, 0x34}
-		#endif
 	};
 
-	unsigned char defRGB[NUM_WORMS][3] =
+	unsigned char defRGB[MAX_WORMS][3] =
 	{
 		{26, 26, 63},
 		{15, 43, 15},
-		#if NUM_WORMS == 3 || NUM_WORMS == 4
 		{15, 43, 15},
-		#endif
-		#if NUM_WORMS == 4
+		{15, 43, 15},
+		{15, 43, 15},
+		{15, 43, 15},
+		{15, 43, 15},
 		{15, 43, 15}
-		#endif
 	};
 
-	for(int i = 0; i < NUM_WORMS; ++i)
+	for(int i = 0; i < MAX_WORMS; ++i)
 	{
 		for(int j = 0; j < 7; ++j)
 		{

@@ -33,35 +33,23 @@ LocalController::LocalController(std::shared_ptr<Common> common, std::shared_ptr
 , fadeValue(0)
 , goingToMenu(false)
 {
-	for (int i = 0; i < NUM_WORMS; i++)
+	for (int i = 0; i < settings->numWorms; i++)
 	{
 		Worm* worm = new Worm();
 		worm->settings = settings->wormSettings[i];
 		worm->health = worm->settings->health;
 		worm->index = i;
-		worm->statsX = 0;
+		worm->statsX = (i & 1) ? 175 + 5 : 0;
 		worm->ai = createAi(1 + (rand() & 1), *worm, *settings);
 	
 		game.addWorm(worm);	
 	}
 
-	//game.addViewport(new Viewport(gvl::rect(0, 0, 158+160, 158), 0, 504, 350));
-
-	game.addViewport(new Viewport(gvl::rect(0, 0, 158, 158), 0, 504, 350));
-	game.addViewport(new Viewport(gvl::rect(160, 0, 158+160, 158), 1, 504, 350));
-
-	/*
-	#if NUM_WORMS == 3 || NUM_WORMS == 4
-	game.addViewport(new Viewport(gvl::rect(0, 158 / 2, 158, 158), 2, 504, 350));
-	#endif
-	#if NUM_WORMS == 4
-	game.addViewport(new Viewport(gvl::rect(160, 158 / 2, 158+160, 158), 3, 504, 350));
-	#endif
-	*/
-	//game.addViewport(new Viewport(gvl::rect(160, 0, 158+160, 158), worm3->index, 504, 350));
+	game.addViewport(new Viewport(gvl::rect(0, 0, 175, 200), 0, 504, 350));
+	game.addViewport(new Viewport(gvl::rect(175 + 5, 0, 175 + 5 + 175, 200), 1, 504, 350));
 
 	// +68 on x to align the viewport in the middle
-	game.addSpectatorViewport(new SpectatorViewport(gvl::rect(0, 0, 504 + 68, 350), 504, 350));
+	//game.addSpectatorViewport(new SpectatorViewport(gvl::rect(0, 0, 504 + 68, 350), 504, 350));
 }
 
 LocalController::~LocalController()
@@ -148,7 +136,7 @@ bool LocalController::process()
 		for(int i = 0; i < realFrameSkip && (state == StateGame || state == StateGameEnded); ++i)
 		{
 			//int phase = game.cycles % 2;
-			for (std::size_t i = 0; i < NUM_WORMS; ++i)
+			for (std::size_t i = 0; i < game.worms.size(); ++i)
 			{
 				Worm& worm = *game.worms[(i /*+ phase*/) % game.worms.size()];
 				if(worm.ai.get())
