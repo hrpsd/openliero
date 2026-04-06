@@ -883,7 +883,7 @@ Worm::ControlState InputContext::update(InputState newState, Game& game, Worm* w
 	else
 		hiddenFrames = 0;
 
-		facingEnemy = (game.worms[(worm->index + 1) % 3]->pos.x > worm->pos.x) == worm->direction;
+		facingEnemy = (game.worms[(worm->index + 1) % game.worms.size()]->pos.x > worm->pos.x) == worm->direction;
 	ninjaropeOut = worm->ninjarope.out;
 
 	return cs;
