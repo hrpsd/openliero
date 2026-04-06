@@ -97,7 +97,8 @@ try
 	}
 
 	gfx.settings->screensaverConfig = showScreensaverConfig;
-
+	gfx.settings->fullscreen = !showScreensaverConfig;
+	
 	if (tcSet)
 		gfx.settings->tc = tcName;
 

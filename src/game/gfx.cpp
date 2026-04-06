@@ -1908,11 +1908,7 @@ restart:
 
 	while(running)
 	{
-		if (!settings->screensaverConfig)
-		{
-			setFullscreen(true);
-		}
-        playRenderer.clear();
+		playRenderer.clear();
 		controller->draw(this->playRenderer, false);
 
 		singleScreenRenderer.clear();
