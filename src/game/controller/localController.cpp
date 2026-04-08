@@ -33,20 +33,22 @@ LocalController::LocalController(std::shared_ptr<Common> common, std::shared_ptr
 , fadeValue(0)
 , goingToMenu(false)
 {
+	game.worms.clear();
+
 	for (int i = 0; i < settings->numWorms; i++)
 	{
 		Worm* worm = new Worm();
 		worm->settings = settings->wormSettings[i];
 		worm->health = worm->settings->health;
 		worm->index = i;
-		worm->statsX = (i & 1) ? 175 + 5 : 0;
+		worm->statsX = (i & 1) ? 175 + 5 + 5 : 5;
 		worm->ai = createAi(1 + (rand() & 1), *worm, *settings);
 	
 		game.addWorm(worm);	
 	}
 
-	game.addViewport(new Viewport(gvl::rect(0, 0, 175, 200), 0, 504, 350));
-	game.addViewport(new Viewport(gvl::rect(175 + 5, 0, 175 + 5 + 175, 200), 1, 504, 350));
+	game.addViewport(new Viewport(gvl::rect(0, 0, 355, 200), 0, 504, 350));
+	//game.addViewport(new Viewport(gvl::rect(175 + 5, 0, 175 + 5 + 175, 200), 1, 504, 350));
 
 	// +68 on x to align the viewport in the middle
 	//game.addSpectatorViewport(new SpectatorViewport(gvl::rect(0, 0, 504 + 68, 350), 504, 350));
@@ -182,7 +184,7 @@ bool LocalController::process()
 				endRecord();
 				//game.statsRecorder->finish(game);
 				// TODO: Get rid of cast.
-				presentStats(static_cast<NormalStatsRecorder&>(*game.statsRecorder), game);
+				//presentStats(static_cast<NormalStatsRecorder&>(*game.statsRecorder), game);
 			}
 			return false;
 		}
