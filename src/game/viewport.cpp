@@ -96,7 +96,7 @@ void Viewport::drawHUD(Game& game, Renderer& renderer, GameState state, bool isR
 	if(worm.visible)
 	{
 		int lifebarWidth = worm.health * 100 / worm.settings->health;
-		drawBar(renderer.bmp, worm.statsX * multiplier, renderer.renderResY - 39, lifebarWidth, lifebarWidth / 10 + 234);
+		drawBar(renderer.bmp, worm.statsX * multiplier, renderer.renderResY - 39 + 18, lifebarWidth, lifebarWidth / 10 + 234);
 	}
 	else
 	{
@@ -105,7 +105,7 @@ void Viewport::drawHUD(Game& game, Renderer& renderer, GameState state, bool isR
 		{
 			if(lifebarWidth > 100)
 				lifebarWidth = 100;
-			drawBar(renderer.bmp, worm.statsX * multiplier, renderer.renderResY - 39, lifebarWidth, lifebarWidth / 10 + 234);
+			drawBar(renderer.bmp, worm.statsX * multiplier, renderer.renderResY - 39 + 18, lifebarWidth, lifebarWidth / 10 + 234);
 		}
 	}
 
@@ -120,7 +120,7 @@ void Viewport::drawHUD(Game& game, Renderer& renderer, GameState state, bool isR
 			int ammoBarWidth = ww.ammo * 100 / ww.type->ammo;
 
 			if(ammoBarWidth > 0)
-				drawBar(renderer.bmp, worm.statsX * multiplier, renderer.renderResY - 34, ammoBarWidth, ammoBarWidth / 10 + 245);
+				drawBar(renderer.bmp, worm.statsX * multiplier, renderer.renderResY - 34 + 18, ammoBarWidth, ammoBarWidth / 10 + 245);
 		}
 	}
 	else
@@ -138,16 +138,16 @@ void Viewport::drawHUD(Game& game, Renderer& renderer, GameState state, bool isR
 		}
 
 		if(ammoBarWidth > 0)
-			drawBar(renderer.bmp, worm.statsX * multiplier, renderer.renderResY - 34, ammoBarWidth, ammoBarWidth / 10 + 245);
+			drawBar(renderer.bmp, worm.statsX * multiplier, renderer.renderResY - 34 + 18, ammoBarWidth, ammoBarWidth / 10 + 245);
 
 		if((game.cycles % 20) > 10
 		&& worm.visible)
 		{
-			common.font.drawText(renderer.bmp, LS(Reloading), worm.statsX * multiplier, 164 * multiplier, 50);
+			common.font.drawText(renderer.bmp, LS(Reloading), worm.statsX * multiplier, (164 + 18) * multiplier, 50);
 		}
 	}
 
-	common.font.drawText(renderer.bmp, (LS(Kills) + toString(worm.kills)), worm.statsX * multiplier, renderer.renderResY - 29, 10);
+	common.font.drawText(renderer.bmp, (LS(Kills) + toString(worm.kills)), worm.statsX * multiplier, renderer.renderResY - 29 + 18, 10);
 
 	if(isReplay)
 	{
