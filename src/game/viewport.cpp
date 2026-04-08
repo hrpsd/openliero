@@ -565,9 +565,9 @@ void Viewport::draw(Game& game, Renderer& renderer, GameState state, bool isRepl
 				}
 
 
-				blitImage(renderer.bmp, common.wormSpriteObj(w.currentFrame, w.direction, w.index % 2), tempX, tempY);
+				blitImage(renderer.bmp, common.wormSpriteObj(w.currentFrame, w.direction, (w.index == 0) ? 0 : 1), tempX, tempY);
 				if(game.settings->shadow)
-					blitShadowImage(common, renderer.bmp, common.wormSprite(w.currentFrame, w.direction, w.index % 2), tempX - 3, tempY + 3, 16, 16);
+					blitShadowImage(common, renderer.bmp, common.wormSprite(w.currentFrame, w.direction, (w.index == 0) ? 0 : 1), tempX - 3, tempY + 3, 16, 16);
 			}
 
 			if (w.ai)
