@@ -164,7 +164,7 @@ void Viewport::drawHUD(Game& game, Renderer& renderer, GameState state, bool isR
 	case Settings::GMKillEmAll:
 	case Settings::GMScalesOfJustice:
 	{
-		common.font.drawText(renderer.bmp, (LS(Lives) + toString(worm.lives)), worm.statsX * multiplier, renderer.renderResY - 22, 6);
+		//common.font.drawText(renderer.bmp, (LS(Lives) + toString(worm.lives)), worm.statsX * multiplier, renderer.renderResY - 22, 6);
 	}
 	break;
 
