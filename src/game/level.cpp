@@ -378,3 +378,19 @@ void Level::drawMiniature(Bitmap& dest, int mapX, int mapY, int step)
 		my += step;
 	}
 }
+
+float Level::getEmptyRatio()
+{
+	int nPixels = width * height;
+	int nBackgroundPixels = 0;
+
+	for (auto mat : materials)
+	{
+		if (mat.background())
+		{
+			nBackgroundPixels++;
+		}
+	}
+
+	return (float)nBackgroundPixels / (float)nPixels;
+}

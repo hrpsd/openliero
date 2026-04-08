@@ -120,6 +120,8 @@ struct Level
 		return gvl::rect(0, 0, width, height);
 	}
 
+	float getEmptyRatio();
+
 	void resize(int width_new, int height_new);
 
 	std::vector<unsigned char> data;
