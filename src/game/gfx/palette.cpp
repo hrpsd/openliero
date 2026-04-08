@@ -81,7 +81,7 @@ void Palette::read(gvl::octet_reader& r)
 	}
 }
 
-int const Palette::wormColourIndexes[MAX_WORMS] = { 0x58, 0x78, 0x58, 0x78, 0x58, 0x78, 0x58, 0x78 }; // TODO: Read from EXE?
+int const Palette::wormColourIndexes[MAX_WORMS] = { 0x58, 0x78, 0x78, 0x78, 0x78, 0x78, 0x78, 0x78 }; // TODO: Read from EXE?
 
 void Palette::setWormColour(int i, WormSettings const& settings)
 {
