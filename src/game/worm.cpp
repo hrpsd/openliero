@@ -497,7 +497,7 @@ void Worm::process(Game& game)
 			if(killedTimer == 0 && !game.quickSim) // Don't respawn in quicksim
 				beginRespawn(game);
 
-				if(killedTimer < 0)
+			if(killedTimer < 0)
 				doRespawning(game);
 		}
 	}
@@ -802,26 +802,15 @@ void Worm::initWeapons(Game& game)
 
 void Worm::beginRespawn(Game& game)
 {
-	if (game.worms.size() > 2)
+	if (game.level.getEmptyRatio() >= 0.8f)
 	{
-		if (game.viewports[0]->wormIdx == index) {
-			do
-			{
-				game.viewports[0]->wormIdx = rand() % game.worms.size();	/* code */
-			}
-			while (game.viewports[0]->wormIdx == game.viewports[1]->wormIdx);			
-		}
+		std::unique_ptr<Controller> newController(new LocalController(game.common, game.settings));
 
-		if (game.viewports[1]->wormIdx == index) {
-			do
-			{
-				game.viewports[1]->wormIdx = rand() % game.worms.size();	/* code */
-			}
-			while (game.viewports[1]->wormIdx == game.viewports[0]->wormIdx);			
-		}
-		
-		game.wormByIdx(game.viewports[0]->wormIdx)->statsX = 0;
-		game.wormByIdx(game.viewports[1]->wormIdx)->statsX = 175 + 5;
+		Level newLevel(*game.common);
+		newLevel.generateFromSettings(*game.common, *game.settings, rand);
+		newController->swapLevel(newLevel);
+
+		gfx.controller = std::move(newController);
 	}
 
 	LocalController *lctrl = (LocalController*)gfx.controller.get();

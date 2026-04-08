@@ -329,6 +329,8 @@ struct Worm : gvl::shared {
   // Data for LocalController
   ControlState cleanControlStates;  // This contains the real state of real and
                                     // extended controls
+
+  Rand rand;
 };
 
 bool checkForWormHit(Game& game, int x, int y, int dist, Worm* ownWorm);
