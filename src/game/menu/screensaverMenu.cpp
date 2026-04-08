@@ -46,7 +46,7 @@ void ScreensaverMenu::ReadSettings() {
 						(LPBYTE)&result[0],
 						&size ) == ERROR_FILE_NOT_FOUND)
 	{
-		gfx.settings->playSounds = true;
+		gfx.settings->playSounds = false;
 	} else {
 		gfx.settings->playSounds = result[0] == '1';
 	}

@@ -53,7 +53,7 @@ Settings::Settings()
 , randomLevel(true)
 , map(false)
 , screenSync(true)
-, playSounds(true)
+, playSounds(false)
 , screensaverConfig(true)
 , numWorms(2)
 {
