@@ -57,7 +57,7 @@ try
 			CreateMutexA(0, 1, "Global\\LieroScreensaverPreviewMutex");
     		if (GetLastError() != ERROR_ALREADY_EXISTS)
 			{
-				windowHandle = (HWND)atoi(argv[i + 1]);
+				windowHandle = (HWND)std::stoull(argv[i + 1]);
 			}
 			else {
 				return 0;
