@@ -11,12 +11,6 @@
 #include <string>
 #pragma GCC diagnostic ignored "-Wwrite-strings"
 
-using namespace std;
-
-namespace std {
-	typedef basic_string<TCHAR> _tstring;
-}
-
 HKEY OpenKey (HKEY hRootKey, char strKey[]) {
     HKEY hKey;
     
@@ -28,9 +22,9 @@ HKEY OpenKey (HKEY hRootKey, char strKey[]) {
     return hKey;
 }
  
-void SetVal (HKEY hKey, LPCTSTR lpValue, const char * data, int lol) {
+/*void SetVal (HKEY hKey, LPCTSTR lpValue, const char * data, int lol) {
     RegSetValueEx (hKey, lpValue, 0, REG_SZ, (LPBYTE)data, lol);
-}
+}*/
 
 void ScreensaverMenu::ReadSettings() {
 	HKEY handler = OpenKey(HKEY_CURRENT_USER, "Software\\OpenLiero\\Screensaver");
@@ -86,7 +80,7 @@ ItemBehavior* ScreensaverMenu::getItemBehavior(Common& common, MenuItem& item)
 			return new BooleanSwitchBehavior(common, gfx.settings->playSounds, [](bool v) {
 				gfx.settings->playSounds = v;
 				HKEY handler = OpenKey(HKEY_CURRENT_USER, "Software\\OpenLiero\\Screensaver");
-				SetVal(handler, "PlaySounds", v ? "1" : "0", 1);
+				RegSetValueEx (handler, "PlaySounds", 0, REG_SZ, (LPBYTE)(v ? "1" : "0"), 1);
 				RegCloseKey(handler);
 			 });
 		}
@@ -94,10 +88,9 @@ ItemBehavior* ScreensaverMenu::getItemBehavior(Common& common, MenuItem& item)
 		{
 			return new IntegerBehavior(common, gfx.settings->numWorms, 2, 8, 1, false, [](int v) {
 				HKEY handler = OpenKey(HKEY_CURRENT_USER, "Software\\OpenLiero\\Screensaver");
-				SetVal(handler, "NumWorms", toString(v).c_str(), 1);
+				RegSetValueEx (handler, "NumWorms", 0, REG_SZ, (LPBYTE)toString(v).c_str(), 1);
 				RegCloseKey(handler);
 			});
-			
 		}
 		default:
 			return Menu::getItemBehavior(common, item);
