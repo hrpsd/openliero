@@ -22,7 +22,7 @@ std::shared_ptr<WormAI> LocalController::createAi(int controller, Worm& worm, Se
 		return std::shared_ptr<WormAI>(new DumbLieroAI());
 	else if (controller == 2)
 		return std::shared_ptr<WormAI>(new FollowAI(
-			Weights(), settings.aiParallels, worm.index == 0));
+			Weights(), settings.aiParallels, true));
 
 	return std::shared_ptr<WormAI>();
 }
