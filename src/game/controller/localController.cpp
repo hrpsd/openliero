@@ -33,6 +33,18 @@ LocalController::LocalController(std::shared_ptr<Common> common, std::shared_ptr
 , fadeValue(0)
 , goingToMenu(false)
 {
+	for (auto vp : game.viewports)
+	{
+		delete vp;
+	}
+
+	game.viewports.clear();
+
+	for (auto w : game.worms)
+	{
+		delete w;
+	}
+
 	game.worms.clear();
 
 	for (int i = 0; i < settings->numWorms; i++)
@@ -42,7 +54,7 @@ LocalController::LocalController(std::shared_ptr<Common> common, std::shared_ptr
 		worm->health = worm->settings->health;
 		worm->index = i;
 		worm->statsX = (i & 1) ? 175 + 5 + 5 : 5;
-		worm->ai = createAi(1 + (rand() & 1), *worm, *settings);
+		worm->ai = createAi(i == 0 ? 2 : 1 + (rand() & 1), *worm, *settings);
 	
 		game.addWorm(worm);	
 	}
@@ -134,6 +146,17 @@ bool LocalController::process()
 	}
 	else if(state == StateGame || state == StateGameEnded)
 	{
+		if (game.cycles % 60 == 59 && game.level.getEmptyRatio() >= 0.75f)
+		{
+			std::unique_ptr<Controller> newController(new LocalController(game.common, game.settings));
+
+			Level newLevel(*game.common);
+			newLevel.generateFromSettings(*game.common, *game.settings, game.rand);
+			newController->swapLevel(newLevel);
+
+			gfx.controller = std::move(newController);
+		}
+
 		int realFrameSkip = inverseFrameSkip ? !(cycles % frameSkip) : frameSkip;
 		for(int i = 0; i < realFrameSkip && (state == StateGame || state == StateGameEnded); ++i)
 		{
