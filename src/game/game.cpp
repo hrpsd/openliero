@@ -19,12 +19,11 @@ Game::Game(
 : common(common)
 , soundPlayer(soundPlayer)
 , settings(settingsInit)
-//, statsRecorder(new NormalStatsRecorder)
+, statsRecorder(new NormalStatsRecorder)
 , level(*common)
 , screenFlash(0)
 , gotChanged(false)
 , lastKilledIdx(-1)
-, paused(true)
 , quickSim(false)
 {
 
@@ -95,6 +94,10 @@ void Game::releaseControls()
 
 void Game::clearViewports()
 {
+	for (auto vp : viewports)
+	{
+		delete vp;
+	}
 	viewports.clear();
 	spectatorViewports.clear();
 }
@@ -128,9 +131,6 @@ void Game::drawViewports(Renderer& renderer, GameState state, bool isReplay)
 	for(std::size_t i = 0; i < viewports.size(); ++i)
 	{
 		viewports[i]->draw(*this, renderer, state, isReplay);
-	}
-	for(std::size_t i = 0; i < viewports.size(); ++i)
-	{
 		viewports[i]->drawHUD(*this, renderer, state, isReplay);
 	}
 }
@@ -146,6 +146,10 @@ void Game::drawSpectatorViewports(Renderer& renderer, GameState state, bool isRe
 
 void Game::clearWorms()
 {
+	for (auto w : worms)
+	{
+		delete w;
+	}
 	worms.clear();
 }
 
@@ -338,11 +342,8 @@ void Game::processFrame()
 
 			bool down = false;
 
-			for (int j = 0; j < worms.size(); j++)
-			{
-				if(wormByIdx(j)->killedTimer > 16)
-					down = true;
-			}
+			if(wormByIdx(0)->killedTimer > 16 || wormByIdx(1)->killedTimer > 16)
+				down = true;
 
 			if(down)
 			{
@@ -730,8 +731,8 @@ void Game::postClone(Game& original, bool complete)
 {
 	if (!complete)
 	{
-		statsRecorder.reset(new StatsRecorder);
-		soundPlayer.reset(new NullSoundPlayer);
+		//statsRecorder.reset(new StatsRecorder);
+		//soundPlayer.reset(new NullSoundPlayer);
 		viewports.clear();
 	}
 	else
