@@ -26,7 +26,7 @@ try
 	gfx.rand.seed(Uint32(std::time(0)));
 
 	bool tcSet = false;
-	bool showScreensaverConfig = false;
+	bool showScreensaverConfig = (argc == 1); //Show the settings screen if launching with no switch
 	HWND windowHandle = NULL;
 
 	std::string tcName;
@@ -34,26 +34,18 @@ try
 
 	for(int i = 1; i < argc; ++i)
 	{
-		if(argv[i][0] == '-')
+		if (std::strncmp(argv[i], "/s", 2) == 0)
 		{
-			switch(argv[i][1])
-			{
-			case '-':
-				if (std::strcmp(argv[i] + 2, "config-root") == 0 && i + 1 < argc)
-				{
-					++i;
-					configPath = argv[i];
-				}
-				break;
-			}
+			//Run and Display
 		}
 		else if (std::strncmp(argv[i], "/c", 2) == 0)
 		{
+			//Show the settings screen			
 			showScreensaverConfig = true;
-			
 		}
 		else if (std::strcmp(argv[i], "/p") == 0)
 		{
+			//System settings panel thumb video, abort if other instance is running
 			CreateMutexA(0, 1, "Global\\LieroScreensaverPreviewMutex");
     		if (GetLastError() != ERROR_ALREADY_EXISTS)
 			{
@@ -62,11 +54,6 @@ try
 			else {
 				return 0;
 			}
-		}
-		else
-		{
-			tcName = argv[i];
-			tcSet = true;
 		}
 	}
 
