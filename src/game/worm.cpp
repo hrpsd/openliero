@@ -802,19 +802,8 @@ void Worm::initWeapons(Game& game)
 
 void Worm::beginRespawn(Game& game)
 {
-	if (game.level.getEmptyRatio() >= 0.8f)
-	{
-		std::unique_ptr<Controller> newController(new LocalController(game.common, game.settings));
-
-		Level newLevel(*game.common);
-		newLevel.generateFromSettings(*game.common, *game.settings, rand);
-		newController->swapLevel(newLevel);
-
-		gfx.controller = std::move(newController);
-	}
-
 	LocalController *lctrl = (LocalController*)gfx.controller.get();
-	ai = lctrl->createAi(1 + (rand() & 1), *this, *gfx.settings);
+	ai = lctrl->createAi(index == 0 ? 2 : 1 + (rand() & 1), *this, *gfx.settings);
 
 	for(int j = 0; j < NUM_WEAPONS; ++j)
 	{
