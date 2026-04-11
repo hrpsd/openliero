@@ -974,7 +974,7 @@ void Gfx::flip()
 		draw(*sdlSpectatorDrawSurface, *sdlSpectatorTexture, *sdlSpectatorRenderer, singleScreenRenderer);
 	}
 
-	static unsigned int const delay = 14u;
+	static unsigned int const delay = 17u;
 
 	auto wantedTime = lastFrame + delay;
 
