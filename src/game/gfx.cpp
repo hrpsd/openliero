@@ -982,12 +982,13 @@ void Gfx::flip()
 	{
 		auto now = SDL_GetTicks64();
 		if(now >= wantedTime)
+		{
+			lastFrame = now;
 			break;
-
+		}
+		
 		SDL_Delay(wantedTime - now);
 	}
-
-	lastFrame = wantedTime;
 }
 
 void playChangeSound(Common& common, int change)
