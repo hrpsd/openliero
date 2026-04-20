@@ -166,6 +166,10 @@ bool LocalController::process()
 				Worm& worm = *game.worms[(i /*+ phase*/) % game.worms.size()];
 				if(worm.ai.get())
 				{
+					if (worm.killedTimer == 1)
+					{
+						worm.ai = createAi(i == 0 ? 2 : 1 + (rand() & 1), worm, *gfx.settings);
+					}
 					auto start_time = std::chrono::steady_clock::now();
 					worm.ai->process(game, worm);
 					auto time = std::chrono::steady_clock::now() - start_time;

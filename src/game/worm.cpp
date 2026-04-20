@@ -15,10 +15,6 @@
 #include <gvl/crypt/gash.hpp>
 #include <gvl/io2/fstream.hpp>
 
-#include "gfx.hpp"
-#include "controller/localController.hpp"
-#include "viewport.hpp"
-
 struct Point
 {
 	int x, y;
@@ -802,12 +798,9 @@ void Worm::initWeapons(Game& game)
 
 void Worm::beginRespawn(Game& game)
 {
-	LocalController *lctrl = (LocalController*)gfx.controller.get();
-	ai = lctrl->createAi(index == 0 ? 2 : 1 + (rand() & 1), *this, *gfx.settings);
-
 	for(int j = 0; j < NUM_WEAPONS; ++j)
 	{
-		settings->weapons[j] = gfx.rand(1, 41);
+		settings->weapons[j] = game.rand(1, 41);
 	}
 
 	Common& common = *game.common;
