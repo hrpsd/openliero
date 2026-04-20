@@ -289,7 +289,7 @@ void checkMap(Game& game) {
 
 void Game::processFrame()
 {
-	//statsRecorder->preTick(*this);
+	statsRecorder->preTick(*this);
 
 	if(screenFlash > 0)
 		--screenFlash;
@@ -519,7 +519,7 @@ void Game::processFrame()
 		worms[i]->prevControlStates = worms[i]->controlStates;
 	}
 
-	//statsRecorder->tick(*this);
+	statsRecorder->tick(*this);
 }
 
 void Game::focus(Renderer& renderer)
@@ -731,13 +731,13 @@ void Game::postClone(Game& original, bool complete)
 {
 	if (!complete)
 	{
-		//statsRecorder.reset(new StatsRecorder);
+		statsRecorder.reset(new StatsRecorder);
 		//soundPlayer.reset(new NullSoundPlayer);
 		viewports.clear();
 	}
 	else
 	{
-		//statsRecorder.reset(new NormalStatsRecorder(static_cast<NormalStatsRecorder&>(*statsRecorder)));
+		statsRecorder.reset(new NormalStatsRecorder(static_cast<NormalStatsRecorder&>(*statsRecorder)));
 
 		for (auto& vp : viewports)
 		{

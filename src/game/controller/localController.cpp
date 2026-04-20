@@ -173,7 +173,7 @@ bool LocalController::process()
 					auto start_time = std::chrono::steady_clock::now();
 					worm.ai->process(game, worm);
 					auto time = std::chrono::steady_clock::now() - start_time;
-					//game.statsRecorder->aiProcessTime(&worm, time);
+					game.statsRecorder->aiProcessTime(&worm, time);
 				}
 			}
 			if(replay.get())
@@ -209,9 +209,9 @@ bool LocalController::process()
 			if(state == StateGameEnded)
 			{
 				endRecord();
-				//game.statsRecorder->finish(game);
+				game.statsRecorder->finish(game);
 				// TODO: Get rid of cast.
-				//presentStats(static_cast<NormalStatsRecorder&>(*game.statsRecorder), game);
+				presentStats(static_cast<NormalStatsRecorder&>(*game.statsRecorder), game);
 			}
 			return false;
 		}

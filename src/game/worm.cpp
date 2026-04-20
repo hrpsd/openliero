@@ -470,7 +470,7 @@ void Worm::process(Game& game)
 						index, 0);
 				}
 
-				//game.statsRecorder->afterDeath(this);
+				game.statsRecorder->afterDeath(this);
 
 				release(Fire);
 			}
@@ -902,7 +902,7 @@ void Worm::doRespawning(Game& game)
 			direction = 1;
 		}
 
-		//game.statsRecorder->afterSpawn(this);
+		game.statsRecorder->afterSpawn(this);
 	}
 }
 

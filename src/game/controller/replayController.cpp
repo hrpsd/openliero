@@ -125,7 +125,7 @@ bool ReplayController::process()
 	{
 		if (state == StateGameEnded)
 		{
-			//game->statsRecorder->finish(*game);
+			game->statsRecorder->finish(*game);
 			presentStats(static_cast<NormalStatsRecorder&>(*game->statsRecorder), *game);
 		}
 		return false;
@@ -133,7 +133,7 @@ bool ReplayController::process()
 
 	if (!replay.get() && state == StateGame)
 	{
-		//game->statsRecorder->finish(*game);
+		game->statsRecorder->finish(*game);
 		presentStats(static_cast<NormalStatsRecorder&>(*game->statsRecorder), *game);
 		return false;
 	}

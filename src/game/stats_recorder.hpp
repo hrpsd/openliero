@@ -3,6 +3,7 @@
 #include <chrono>
 #include "worm.hpp"
 #include "gfx/blit.hpp"
+#include "settings.hpp"
 
 struct Common;
 struct Renderer;
@@ -119,14 +120,14 @@ struct NormalStatsRecorder : StatsRecorder
 	, gameTime(0)
 	, presence(504 / 2, 350 / 2, 504, 350)
 	{
-		for (int i = 0; i < 2; ++i)
+		for (int i = 0; i < MAX_WORMS; ++i)
 		{
 			worms[i].index = i;
 		}
 	}
 
 	int frame;
-	WormStats worms[2];
+	WormStats worms[MAX_WORMS];
 	std::chrono::time_point<std::chrono::steady_clock> frameStart;
 	int64_t processTimeTotal;
 	int gameTime;

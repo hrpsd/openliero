@@ -19,7 +19,7 @@ NObject& NObjectType::create(Game& game, fixedvec vel, fixedvec pos, int color, 
 	obj.hasHit = false;
 
 	Worm* owner = game.wormByIdx(ownerIdx);
-	//game.statsRecorder->damagePotential(owner, firedBy, hitDamage);
+	game.statsRecorder->damagePotential(owner, firedBy, hitDamage);
 
 	if(startFrame > 0)
 	{
@@ -204,7 +204,7 @@ void NObject::process(Game& game)
 					game.doDamage(w, t.hitDamage, ownerIdx);
 
 					Worm* owner = game.wormByIdx(ownerIdx);
-					//game.statsRecorder->damageDealt(owner, firedBy, &w, t.hitDamage, hasHit);
+					game.statsRecorder->damageDealt(owner, firedBy, &w, t.hitDamage, hasHit);
 					hasHit = true;
 
 					if(t.hitDamage > 0

@@ -52,7 +52,7 @@ void SObjectType::create(Game& game, int x, int y, int ownerIdx, WormWeapon* fir
 
 	Worm* owner = game.wormByIdx(ownerIdx);
 
-	//game.statsRecorder->damagePotential(owner, firedBy, damage);
+	game.statsRecorder->damagePotential(owner, firedBy, damage);
 
 	if(damage > 0)
 	{
@@ -98,14 +98,14 @@ void SObjectType::create(Game& game, int x, int y, int ownerIdx, WormWeapon* fir
 
 				if (from && !from->hasHit)
 				{
-					//game.statsRecorder->hit(owner, firedBy, &w);
+					game.statsRecorder->hit(owner, firedBy, &w);
 					from->hasHit = true;
 				}
 
 				if(w.health > 0)
 				{
 					game.doDamage(w, z, ownerIdx);
-					//game.statsRecorder->damageDealt(owner, firedBy, &w, z, false);
+					game.statsRecorder->damageDealt(owner, firedBy, &w, z, false);
 
 					int bloodAmount = game.settings->blood * powerSum / 100;
 
