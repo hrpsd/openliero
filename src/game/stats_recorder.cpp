@@ -64,8 +64,6 @@ void NormalStatsRecorder::damagePotential(Worm* byWorm, WormWeapon* weapon, int 
 
 void NormalStatsRecorder::damageDealt(Worm* byWorm, WormWeapon* weapon, Worm* toWorm, int hp, bool hasHit)
 {
-	return;
-
 	assert(toWorm);
 
 	auto& w = worms[toWorm->index];
@@ -137,24 +135,20 @@ void NormalStatsRecorder::preTick(Game& game)
 {
 	frameStart = std::chrono::steady_clock::now();
 
-	for (auto& w : worms)
+	for (auto* worm : game.worms)
 	{
-		w.wormFrameStats.push_back(WormFrameStats());
+		worms[worm->index].wormFrameStats.push_back(WormFrameStats());
 
-		Worm& worm = *game.worms[w.index];
+		int h = std::max(worm->health, 0);
+		if (!worm->visible)
+			h = worm->settings->health;
 
-		int h = std::max(worm.health, 0);
-		if (!worm.visible)
-			h = worm.settings->health;
-
-		w.wormFrameStats.back().totalHp = worm.lives * worm.settings->health + h;
+		worms[worm->index].wormFrameStats.back().totalHp = worm->lives * worm->settings->health + h;
 	}
 }
 
 void NormalStatsRecorder::tick(Game& game)
 {
-	return;
-	
 	auto frameEnd = std::chrono::steady_clock::now();
 	processTimeTotal += std::chrono::duration_cast<std::chrono::milliseconds>(frameEnd - frameStart).count();
 
