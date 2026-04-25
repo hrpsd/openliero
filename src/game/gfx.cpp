@@ -295,7 +295,6 @@ Gfx::Gfx()
 
 void Gfx::init()
 {
-	//SDL_ShowCursor(SDL_DISABLE);
 	lastFrame = SDL_GetTicks64();
 
 	playRenderer.init(355, 200);
@@ -371,6 +370,7 @@ void Gfx::setVideoMode(HWND windowHandle)
 	if (settings->fullscreen)
 	{
 		flags |= SDL_WINDOW_FULLSCREEN_DESKTOP;
+		SDL_ShowCursor(SDL_DISABLE);
 	}
 
 	if (!sdlWindow)
