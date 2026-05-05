@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <vector>
 
-#define CHANNEL_COUNT (32)
+#define CHANNEL_COUNT (8)
 
 typedef struct sfx_mixer sfx_mixer;
 

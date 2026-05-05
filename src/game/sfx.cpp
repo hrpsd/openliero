@@ -18,7 +18,7 @@ extern "C" void SDLCALL Sfx_callback(void *userdata, Uint8 *stream, int len)
 
 void Sfx::init()
 {
-	if (gfx.settings->playSounds)
+	if (gfx.settings->playSounds && gfx.screensaverPreviewHwnd == NULL)
 	{
 		if(initialized)
 			return;
@@ -52,7 +52,7 @@ void Sfx::init()
 
 void Sfx::deinit()
 {
-	if (gfx.settings->playSounds)
+	if (gfx.settings->playSounds && gfx.screensaverPreviewHwnd == NULL)
 	{
 		if(!initialized)
 			return;
@@ -65,7 +65,7 @@ void Sfx::deinit()
 
 void Sfx::play(Common& common, int sound, void* id, int loops)
 {
-	if (gfx.settings->playSounds)
+	if (gfx.settings->playSounds && gfx.screensaverPreviewHwnd == NULL)
 	{
 		if(!initialized)
 			return;
@@ -76,7 +76,7 @@ void Sfx::play(Common& common, int sound, void* id, int loops)
 
 void Sfx::stop(void* id)
 {
-	if (gfx.settings->playSounds)
+	if (gfx.settings->playSounds && gfx.screensaverPreviewHwnd == NULL)
 	{
 		if(!initialized)
 			return;
@@ -87,7 +87,7 @@ void Sfx::stop(void* id)
 
 bool Sfx::isPlaying(void* id)
 {
-	if (gfx.settings->playSounds)
+	if (gfx.settings->playSounds && gfx.screensaverPreviewHwnd == NULL)
 	{
 		if(!initialized)
 			return false;

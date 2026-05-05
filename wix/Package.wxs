@@ -1,5 +1,5 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
-  <Package Id="SyvainNowe.OpenLieroScreensaver" Name="Open Liero Screensaver" Manufacturer="Sylvain Nowé" Version="1.0.1">
+  <Package Id="SyvainNowe.OpenLieroScreensaver" Name="Open Liero Screensaver" Manufacturer="Sylvain Nowé" Version="1.0.2">
     <MediaTemplate EmbedCab="yes"/>
 
     <StandardDirectory Id="TARGETDIR">
