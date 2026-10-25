@@ -803,6 +803,8 @@ void Worm::beginRespawn(Game& game)
 		settings->weapons[j] = game.rand(1, 41);
 	}
 
+	initWeapons(game);
+	
 	Common& common = *game.common;
 
 	auto temp = ftoi(pos);
