@@ -450,6 +450,20 @@ double EvaluateResult::weightedScore() const
 void SimpleAI::process(Game& game, Worm& worm)
 {
 	Worm* target = game.wormByIdx((worm.index + 1) % game.worms.size());
+	int shortestDistance = wormDistance(&worm, target);
+
+	for (Worm *w : game.worms)
+	{
+		if (w != &worm) {
+			int distance = wormDistance(&worm, w);
+
+			if (distance < shortestDistance) {
+				shortestDistance = distance;
+				target = w;
+			}
+		}
+	}
+
 
 	auto cs = worm.controlStates;
 
@@ -716,7 +730,20 @@ void FollowAI::process(Game& game, Worm& worm)
 {
 	Common& common = *game.common;
 
-	Worm* target = game.worms[(worm.index + 1) % game.worms.size()];
+	Worm* target = game.wormByIdx((worm.index + 1) % game.worms.size());
+	int shortestDistance = wormDistance(&worm, target);
+
+	for (Worm *w : game.worms)
+	{
+		if (w != &worm) {
+			int distance = wormDistance(&worm, w);
+
+			if (distance < shortestDistance) {
+				shortestDistance = distance;
+				target = w;
+			}
+		}
+	}
 
 	{
 		int targetx = ftoi(target->pos.x), targety = ftoi(target->pos.y);
